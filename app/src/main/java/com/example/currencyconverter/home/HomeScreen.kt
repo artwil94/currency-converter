@@ -19,12 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.example.currencyconverter.viewmodel.RatesUIState
 import com.example.currencyconverter.viewmodel.RatesViewModel
 
 @ExperimentalMaterial3Api
 @Composable
-fun HomeScreen(viewModel: RatesViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
     var fromCurrency by remember {
         mutableStateOf("PLN")
