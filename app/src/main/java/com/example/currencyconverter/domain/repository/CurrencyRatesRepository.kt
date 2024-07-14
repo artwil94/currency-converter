@@ -5,7 +5,7 @@ import com.example.currencyconverter.util.Response
 
 interface CurrencyRatesRepository {
 
-    suspend fun getCurrencyRates(
+    suspend fun getCurrencyRate(
         from: String,
         to: String,
         amount: Float

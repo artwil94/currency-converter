@@ -9,7 +9,7 @@ import javax.inject.Inject
 class CurrencyRepositoryImpl @Inject constructor(
     private val fxRatesApi: FxRatesApi
 ) : CurrencyRatesRepository {
-    override suspend fun getCurrencyRates(
+    override suspend fun getCurrencyRate(
         from: String,
         to: String,
         amount: Float

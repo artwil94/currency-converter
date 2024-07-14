@@ -26,7 +26,7 @@ class RatesViewModel @Inject constructor(
             uiState = uiState.copy(
                 isLoading = true
             )
-            val result = repository.getCurrencyRates(from = from, to = to, amount = amount)
+            val result = repository.getCurrencyRate(from = from, to = to, amount = amount)
             Timber.d("ARTUR ${result.message}")
             when (result) {
                 is Response.Success -> {
