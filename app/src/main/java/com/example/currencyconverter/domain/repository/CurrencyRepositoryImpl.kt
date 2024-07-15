@@ -1,7 +1,7 @@
 package com.example.currencyconverter.domain.repository
 
 import com.example.currencyconverter.data.remote.FxRatesApi
-import com.example.currencyconverter.domain.model.CurrencyRate
+import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.model.toCurrencyRate
 import com.example.currencyconverter.util.Response
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class CurrencyRepositoryImpl @Inject constructor(
         from: String,
         to: String,
         amount: Float
-    ): Response<CurrencyRate> {
+    ): Response<CurrencyConversion> {
         return try {
             val result =
                 fxRatesApi.getFxRates(from = from, to = to, amount = amount).toCurrencyRate()

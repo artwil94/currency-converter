@@ -1,5 +1,6 @@
 package com.example.currencyconverter.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,10 +24,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.currencyconverter.R
+import com.example.currencyconverter.composable.ChangeSystemBarColor
 import com.example.currencyconverter.composable.CountryItem
 import com.example.currencyconverter.composable.CurrencyConverter
 import com.example.currencyconverter.composable.SearchBottomSheet
@@ -56,7 +59,8 @@ fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hil
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .background(color = Color.White),
             contentAlignment = Alignment.Center
         ) {
             HomeScreenContent(
@@ -108,17 +112,23 @@ fun HomeScreenContent(
         skipHalfExpanded = true
     )
     val coroutineScope = rememberCoroutineScope()
+    ChangeSystemBarColor(statusBarColor = Color.White)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(TgTheme.tGDimensions.padding)
     ) {
         Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingSeparator))
-        CurrencyConverter(onChevronDownClick = {
-            coroutineScope.launch {
-                searchBottomSheetState.show()
+        uiState.currencyConversion?.let {
+            CurrencyConverter(
+                currencyConversion = it,
+                onChevronDownClick = {
+                coroutineScope.launch {
+                    searchBottomSheetState.show()
+                }
             }
-        })
+            )
+        }
     }
     SearchBottomSheet(
         title = stringResource(id = R.string.sending_to),

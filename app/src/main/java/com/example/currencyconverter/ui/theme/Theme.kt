@@ -133,48 +133,39 @@ data class TgTypography(
         color = Color(0xFF333333),
     ),
     val calculatorLabel: TextStyle = TextStyle(
-        fontSize = 12.sp,
-        lineHeight = 18.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
         fontFamily = TgTheme.fonts.robotoLight,
         fontWeight = FontWeight(300),
         color = Color(0xFF696878)
     ),
+    val rateComponent: TextStyle = TextStyle(
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        fontFamily = TgTheme.fonts.robotoMedium,
+        fontWeight = FontWeight(400),
+        color = Color.White
+    ),
     val fromAmount: TextStyle = TextStyle(
-        fontSize = 36.sp,
-        lineHeight = 36.sp,
+        fontSize = 40.sp,
+        lineHeight = 40.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
         color = Color(0xFF2962FF)
     ),
+    val fromAmountError: TextStyle = TextStyle(
+        fontSize = 40.sp,
+        lineHeight = 40.sp,
+        fontFamily = TgTheme.fonts.freigeistMedium,
+        fontWeight = FontWeight(550),
+        color = Color(0xFFF8326A)
+    ),
     val toAmount: TextStyle = TextStyle(
-        fontSize = 36.sp,
-        lineHeight = 36.sp,
+        fontSize = 40.sp,
+        lineHeight = 40.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
         color = Color.Black
-    ),
-    val actionButton: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        lineHeight = 22.sp,
-        fontFamily = TgTheme.fonts.freigeistMedium,
-        fontWeight = FontWeight(550),
-        color = Color(0xFF333333),
-    ),
-    val actionButtonWhite: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        lineHeight = 22.sp,
-        fontFamily = TgTheme.fonts.freigeistMedium,
-        fontWeight = FontWeight(550),
-        color = Color.White,
-    ),
-    val searchBarPlaceHolder: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        fontFamily = TgTheme.fonts.robotoLight,
-        fontWeight = FontWeight(300),
-        color = Color(0xFF6B687A),
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
     ),
     val distance: TextStyle = TextStyle(
         fontSize = 24.sp,
@@ -217,6 +208,7 @@ data class TgShapes(
     ),
     val buttonDefaultShape: Shape = RoundedCornerShape(size = 1000.dp),
     val bottomSheet: Shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
+    val currencyRateComponent: Shape = RoundedCornerShape(50.dp),
 )
 
 data class TgDimensions(
@@ -233,7 +225,7 @@ data class TgDimensions(
     val icon: Dp = 24.dp,
     val iconSmall: Dp = 16.dp,
     val searchBarCloseIcon: Dp = 20.dp,
-    val calculatorItemHeight: Dp = 92.dp,
+    val calculatorItemReceiverHeight: Dp = 100.dp,
     val bottomSheetHandle: Dp = 6.dp,
 )
 
@@ -241,7 +233,9 @@ data class TgColors(
     val textStandard: Color = Color(0xFF333333),
     val shadow: Color = Color(0x0D000000),
     val backgroundScreen: Color = Color(0xFFEDF0F4),
-    val bottomSheetHandle : Color = Color(0xFFE6E1E6),
-    val searchBarBorder: Color = Color(0xFF6C727A)
-
+    val bottomSheetHandle: Color = Color(0xFFE6E1E6),
+    val surface: Color = bottomSheetHandle,
+    val searchBarBorder: Color = Color(0xFF6C727A),
+    val switchIcon: Color = Color(0xFF2962FF),
+    val inputError: Color = Color(0xFFF8326A)
 )

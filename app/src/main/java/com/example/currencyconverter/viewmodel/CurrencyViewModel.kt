@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencyconverter.domain.model.CurrencyRate
+import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.repository.CurrencyRepository
 import com.example.currencyconverter.util.Response
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,5 +54,5 @@ class RatesViewModel @Inject constructor(
 data class RatesUIState(
     val isLoading: Boolean = true,
     val error: String? = null,
-    var currencyConversion: CurrencyRate? = null
+    var currencyConversion: CurrencyConversion? = null
 )

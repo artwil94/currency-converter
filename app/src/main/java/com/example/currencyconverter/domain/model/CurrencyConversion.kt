@@ -2,7 +2,7 @@ package com.example.currencyconverter.domain.model
 
 import com.example.currencyconverter.data.remote.CurrencyConversionDto
 
-data class CurrencyRate(
+data class CurrencyConversion(
     val from: String,
     val to: String,
     val rate: Double,
@@ -10,9 +10,9 @@ data class CurrencyRate(
     val toAmount: Double
 )
 
-fun CurrencyConversionDto.toCurrencyRate(): CurrencyRate? {
+fun CurrencyConversionDto.toCurrencyRate(): CurrencyConversion? {
     return if (from != null && to != null && rate != null && fromAmount != null && toAmount != null) {
-        CurrencyRate(
+        CurrencyConversion(
             from = from,
             to = to,
             rate = rate,

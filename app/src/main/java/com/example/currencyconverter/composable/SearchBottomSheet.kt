@@ -62,7 +62,7 @@ fun SearchBottomSheet(
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
                 countries.forEach { country ->
                     CountryItem(country = country)
-                    HorizontalDivider()
+                    HorizontalDivider(color = TgTheme.tGColors.backgroundScreen)
                     Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingMedium))
                 }
                 Spacer(modifier = Modifier.height(300.dp))
