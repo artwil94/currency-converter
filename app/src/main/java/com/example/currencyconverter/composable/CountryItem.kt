@@ -31,11 +31,11 @@ import com.example.currencyconverter.ui.theme.TgTheme
 @Composable
 fun CountryItem(
     country: Country,
-    onClick: () -> Unit = {}
+    onClick: (Country) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
-            .clickable { onClick.invoke() }
+            .clickable { onClick.invoke(country) }
             .padding(
                 start = TgTheme.tGDimensions.paddingS,
                 end = TgTheme.tGDimensions.paddingS,
@@ -67,7 +67,7 @@ fun CountryIcon(
 ) {
     Box(
         modifier = modifier
-            .size(42.dp)
+            .size(TgTheme.tGDimensions.countryIcon)
             .clip(CircleShape)
             .background(
                 TgTheme.tGColors.backgroundScreen

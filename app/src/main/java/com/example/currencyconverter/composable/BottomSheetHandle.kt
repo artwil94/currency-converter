@@ -1,4 +1,4 @@
-package com.example.currencyconverter
+package com.example.currencyconverter.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

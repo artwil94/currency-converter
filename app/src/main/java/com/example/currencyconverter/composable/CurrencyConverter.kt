@@ -34,14 +34,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.R
+import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.ui.theme.TgTheme
+import com.example.currencyconverter.viewmodel.DEFAULT_FROM_CURRENCY
+import com.example.currencyconverter.viewmodel.DEFAULT_TO_CURRENCY
 
 @Composable
 fun CalculatorItem(
     modifier: Modifier = Modifier,
     fromAmount: String = "",
     currencyConversion: CurrencyConversion,
+    fromCountry: Country? = null,
+    toCountry: Country? = null,
     itemType: ItemType,
     error: Boolean = false,
     onChevronDownClick: () -> Unit = {},
@@ -74,7 +79,7 @@ fun CalculatorItem(
 
         when (itemType) {
             ItemType.Sending -> {
-                currency = currencyConversion.from
+                currency = fromCountry?.currency ?: DEFAULT_FROM_CURRENCY
                 amount = fromAmount
                 itemLabel = stringResource(id = R.string.sending_from)
                 sendingAmountTextStyle =
@@ -83,7 +88,7 @@ fun CalculatorItem(
             }
 
             ItemType.Receiver -> {
-                currency = currencyConversion.to
+                currency = toCountry?.currency ?: DEFAULT_TO_CURRENCY
                 amount = toAmountFormatted
                 itemLabel = stringResource(id = R.string.receiver_gets)
                 sendingAmountTextStyle = TgTheme.tGTypography.toAmount
@@ -138,6 +143,8 @@ fun CalculatorItem(
 @Composable
 fun CurrencyConverter(
     currencyConversion: CurrencyConversion,
+    fromCountry: Country? = null,
+    toCountry: Country? = null,
     fromAmount: String = "",
     error: Boolean = false,
     onChevronDownClick: () -> Unit = {},
@@ -164,19 +171,21 @@ fun CurrencyConverter(
             CalculatorItem(
                 currencyConversion = currencyConversion,
                 fromAmount = fromAmount,
-                flag = R.drawable.ic_poland_s,
+                flag = fromCountry?.icon ?: R.drawable.ic_poland_s,
                 itemType = ItemType.Sending,
                 error = error,
                 onChevronDownClick = onChevronDownClick,
                 height = 92.dp,
                 onSendingAmountChange = onSendingAmountChange,
-                onDone = onDone
+                onDone = onDone,
+                fromCountry = fromCountry
             )
             CalculatorItem(
                 currencyConversion = currencyConversion,
-                flag = R.drawable.ic_ukraine_s,
+                flag = toCountry?.icon ?: R.drawable.ic_ukraine_s,
                 itemType = ItemType.Receiver,
-                onChevronDownClick = onChevronDownClick
+                onChevronDownClick = onChevronDownClick,
+                toCountry = toCountry
             )
         }
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -249,8 +258,8 @@ fun CalculatorItemPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100.00,
-            toAmount = 390.00
+            fromAmount = 100.00f,
+            toAmount = 390.00f
         ),
         flag = R.drawable.ic_poland_s,
         itemType = ItemType.Sending
@@ -265,8 +274,8 @@ fun CurrencyConverterPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100.00,
-            toAmount = 390.00
+            fromAmount = 100.00f,
+            toAmount = 390.00f
         ),
         error = true
     )
@@ -280,8 +289,8 @@ fun CurrencyRateComponentPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100.00,
-            toAmount = 390.00
+            fromAmount = 100.00f,
+            toAmount = 390.00f
         )
     )
 }

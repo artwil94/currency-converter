@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.currencyconverter.R
 import com.example.currencyconverter.composable.ChangeSystemBarColor
 import com.example.currencyconverter.composable.CurrencyConverter
@@ -35,8 +34,9 @@ import com.example.currencyconverter.composable.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
 import com.example.currencyconverter.viewmodel.RatesUIState
-import com.example.currencyconverter.viewmodel.RatesViewModel
+import com.example.currencyconverter.viewmodel.CurrencyViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 const val POLAND_INDEX = 0
 const val GERMANY_INDEX = 1
@@ -46,17 +46,29 @@ const val UKRAINE_INDEX = 3
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 @Composable
-fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hiltViewModel()) {
+fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
     val supportedCountries = viewModel.supportedCountries
-    var fromCurrency by remember { mutableStateOf(viewModel.from.value) }
-    var toCurrency by remember { mutableStateOf(viewModel.to.value) }
+    var fromCurrency = remember {
+        mutableStateOf(
+            uiState.fromCountry?.currency ?: viewModel.from.value
+        )
+    }
+    Timber.d("ARTURR ${fromCurrency.value}")
+    Timber.d("ARTURR state ${uiState.fromCountry?.currency}")
+    var toCurrency by remember { mutableStateOf(uiState.toCountry?.currency ?: viewModel.to.value) }
     var sendingAmount = remember { mutableStateOf("300") }
 //    val fromAmountFormatted = String.format("%.2f",sendingAmount.value.toDouble())
     LaunchedEffect(key1 = Unit) {
         if (sendingAmount.value.isNotBlank()) {
             val amount = sendingAmount.value.toFloat()
-            viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = amount)
+            viewModel.getCurrencyRates(from = fromCurrency.value, to = toCurrency, amount = amount)
+        }
+    }
+    LaunchedEffect(key1 = uiState.fromCountry) {
+        if (sendingAmount.value.isNotBlank()) {
+            val amount = sendingAmount.value.toFloat()
+            viewModel.getCurrencyRates(from = fromCurrency.value, to = toCurrency, amount = amount)
         }
     }
     Scaffold(
@@ -82,11 +94,14 @@ fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hil
                     if (sendingAmount.value.isNotBlank()) {
                         val amount = sendingAmount.value.toFloat()
                         viewModel.getCurrencyRates(
-                            from = fromCurrency,
+                            from = fromCurrency.value,
                             to = toCurrency,
                             amount = amount
                         )
                     }
+                },
+                onCountry = { country ->
+                    viewModel.updateCountry(country = country)
                 }
             )
         }
@@ -102,6 +117,7 @@ fun HomeScreenContent(
     supportedCountries: List<Country>,
     onSendingAmountChange: (String) -> Unit,
     onDone: () -> Unit,
+    onCountry: (Country) -> Unit,
 ) {
     val searchBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -125,12 +141,16 @@ fun HomeScreenContent(
                     }
                 },
                 onSendingAmountChange = onSendingAmountChange,
-                onDone = onDone
+                onDone = onDone,
+                fromCountry = uiState.fromCountry
             )
         }
     }
     SearchBottomSheet(
         title = stringResource(id = R.string.sending_to),
-        bottomSheetState = searchBottomSheetState, countries = supportedCountries
+        bottomSheetState = searchBottomSheetState, countries = supportedCountries,
+        onCountry = {
+            onCountry.invoke(it)
+        }
     )
 }

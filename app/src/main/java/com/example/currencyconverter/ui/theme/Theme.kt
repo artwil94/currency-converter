@@ -231,6 +231,8 @@ data class TgDimensions(
     val searchBarCloseIcon: Dp = 20.dp,
     val calculatorItemReceiverHeight: Dp = 100.dp,
     val bottomSheetHandle: Dp = 6.dp,
+    val countryIcon: Dp = 42.dp,
+    val errorMessage: Dp = 32.dp
 )
 
 data class TgColors(
@@ -241,5 +243,6 @@ data class TgColors(
     val surface: Color = bottomSheetHandle,
     val searchBarBorder: Color = Color(0xFF6C727A),
     val switchIcon: Color = Color(0xFF2962FF),
-    val inputError: Color = Color(0xFFF8326A)
+    val inputError: Color = Color(0xFFF8326A),
+    val errorMessage: Color = Color(0x1AE5476D)
 )

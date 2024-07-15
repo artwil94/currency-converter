@@ -6,8 +6,8 @@ data class CurrencyConversion(
     val from: String,
     val to: String,
     val rate: Double,
-    val fromAmount: Double,
-    val toAmount: Double
+    val fromAmount: Float,
+    val toAmount: Float
 )
 
 fun CurrencyConversionDto.toCurrencyRate(): CurrencyConversion? {

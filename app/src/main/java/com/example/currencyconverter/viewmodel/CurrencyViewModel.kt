@@ -16,15 +16,18 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
+const val DEFAULT_FROM_CURRENCY = "PLN"
+const val DEFAULT_TO_CURRENCY = "UAH"
+
 @HiltViewModel
-class RatesViewModel @Inject constructor(
+class CurrencyViewModel @Inject constructor(
     private val repository: CurrencyRepository
 ) : ViewModel() {
 
     var uiState by mutableStateOf(RatesUIState())
         private set
-    val from: MutableState<String> = mutableStateOf("PLN")
-    val to: MutableState<String> = mutableStateOf("UAH")
+    val from: MutableState<String> = mutableStateOf(DEFAULT_FROM_CURRENCY)
+    val to: MutableState<String> = mutableStateOf(DEFAULT_TO_CURRENCY)
     val supportedCountries = listOf(
         Country(
             name = "Poland",
@@ -55,6 +58,7 @@ class RatesViewModel @Inject constructor(
             icon = R.drawable.ic_ukraine_big
         )
     )
+//    val fromCountry: MutableState<Country> = mutableStateOf(supportedCountries[0])
 
     fun getCurrencyRates(from: String, to: String, amount: Float) {
         viewModelScope.launch {
@@ -83,10 +87,26 @@ class RatesViewModel @Inject constructor(
         }
     }
 
+    fun updateCountry(country: Country) {
+        viewModelScope.launch {
+            uiState = uiState.copy(
+                isLoading = false,
+                fromCountry = country
+            )
+            if (uiState.fromCountry?.currency != null && uiState.toCountry?.currency != null && uiState.currencyConversion != null)
+                getCurrencyRates(
+                    from = uiState.fromCountry?.currency ?: DEFAULT_FROM_CURRENCY,
+                    to = uiState.toCountry?.currency ?: DEFAULT_TO_CURRENCY,
+                    amount = uiState.currencyConversion?.fromAmount ?: 0.0f
+                )
+        }
+    }
 }
 
 data class RatesUIState(
     val isLoading: Boolean = true,
     val error: String? = null,
-    var currencyConversion: CurrencyConversion? = null
+    var currencyConversion: CurrencyConversion? = null,
+    var fromCountry: Country? = null,
+    var toCountry: Country? = null
 )

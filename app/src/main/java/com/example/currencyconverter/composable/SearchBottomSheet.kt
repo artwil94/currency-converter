@@ -18,17 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.currencyconverter.BottomSheetHandle
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
 fun SearchBottomSheet(
     title: String,
     countries: List<Country>,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    onCountry: (Country) -> Unit
 ) {
     val coroutine = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -61,7 +62,12 @@ fun SearchBottomSheet(
                 )
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
                 countries.forEach { country ->
-                    CountryItem(country = country)
+                    CountryItem(country = country, onClick = {
+                        onCountry.invoke(country)
+                        coroutine.launch {
+                            bottomSheetState.hide()
+                        }
+                    })
                     HorizontalDivider(color = TgTheme.tGColors.backgroundScreen)
                     Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingMedium))
                 }
