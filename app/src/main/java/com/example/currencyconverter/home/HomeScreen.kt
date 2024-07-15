@@ -30,7 +30,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.currencyconverter.R
 import com.example.currencyconverter.composable.ChangeSystemBarColor
-import com.example.currencyconverter.composable.CountryItem
 import com.example.currencyconverter.composable.CurrencyConverter
 import com.example.currencyconverter.composable.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
@@ -39,17 +38,26 @@ import com.example.currencyconverter.viewmodel.RatesUIState
 import com.example.currencyconverter.viewmodel.RatesViewModel
 import kotlinx.coroutines.launch
 
+const val POLAND_INDEX = 0
+const val GERMANY_INDEX = 1
+const val UK_INDEX = 2
+const val UKRAINE_INDEX = 3
+
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
-    var fromCurrency by remember { mutableStateOf("PLN") }
-    var toCurrency by remember { mutableStateOf("UAH") }
-    var amount by remember { mutableStateOf(300f) }
+    val supportedCountries = viewModel.supportedCountries
+    var fromCurrency by remember { mutableStateOf(viewModel.from.value) }
+    var toCurrency by remember { mutableStateOf(viewModel.to.value) }
+    var sendingAmount = remember { mutableStateOf("300") }
+//    val fromAmountFormatted = String.format("%.2f",sendingAmount.value.toDouble())
     LaunchedEffect(key1 = Unit) {
-        viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = amount)
-
+        if (sendingAmount.value.isNotBlank()) {
+            val amount = sendingAmount.value.toFloat()
+            viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = amount)
+        }
     }
     Scaffold(
         modifier = Modifier
@@ -64,9 +72,23 @@ fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hil
             contentAlignment = Alignment.Center
         ) {
             HomeScreenContent(
-                uiState = uiState
+                uiState = uiState,
+                fromAmount = sendingAmount.value,
+                supportedCountries = supportedCountries,
+                onSendingAmountChange = { value ->
+                    sendingAmount.value = value
+                },
+                onDone = {
+                    if (sendingAmount.value.isNotBlank()) {
+                        val amount = sendingAmount.value.toFloat()
+                        viewModel.getCurrencyRates(
+                            from = fromCurrency,
+                            to = toCurrency,
+                            amount = amount
+                        )
+                    }
+                }
             )
-
         }
     }
 }
@@ -76,37 +98,11 @@ fun HomeScreen(navController: NavHostController, viewModel: RatesViewModel = hil
 @Composable
 fun HomeScreenContent(
     uiState: RatesUIState,
+    fromAmount: String,
+    supportedCountries: List<Country>,
+    onSendingAmountChange: (String) -> Unit,
+    onDone: () -> Unit,
 ) {
-    val supportedCountries = listOf(
-        Country(
-            name = "Poland",
-            currency = "PLN",
-            currencyName = "Polish zloty",
-            sendingLimit = 20000,
-            icon = R.drawable.ic_poland_big
-        ),
-        Country(
-            name = "Germany",
-            currency = "EUR",
-            currencyName = "Euro",
-            sendingLimit = 5000,
-            icon = R.drawable.ic_germany_big
-        ),
-        Country(
-            name = "Great Britain",
-            currency = "GBP",
-            currencyName = "British Pound",
-            sendingLimit = 1000,
-            icon = R.drawable.ic_uk_big
-        ),
-        Country(
-            name = "Ukraine",
-            currency = "UAH",
-            currencyName = "Hrivna",
-            sendingLimit = 50000,
-            icon = R.drawable.ic_ukraine_big
-        )
-    )
     val searchBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
@@ -122,11 +118,14 @@ fun HomeScreenContent(
         uiState.currencyConversion?.let {
             CurrencyConverter(
                 currencyConversion = it,
+                fromAmount = fromAmount,
                 onChevronDownClick = {
-                coroutineScope.launch {
-                    searchBottomSheetState.show()
-                }
-            }
+                    coroutineScope.launch {
+                        searchBottomSheetState.show()
+                    }
+                },
+                onSendingAmountChange = onSendingAmountChange,
+                onDone = onDone
             )
         }
     }

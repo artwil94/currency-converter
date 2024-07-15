@@ -40,10 +40,13 @@ import com.example.currencyconverter.ui.theme.TgTheme
 @Composable
 fun CalculatorItem(
     modifier: Modifier = Modifier,
+    fromAmount: String = "",
     currencyConversion: CurrencyConversion,
     itemType: ItemType,
     error: Boolean = false,
     onChevronDownClick: () -> Unit = {},
+    onSendingAmountChange: (String) -> Unit = {},
+    onDone: () -> Unit = {},
     height: Dp = TgTheme.tGDimensions.calculatorItemReceiverHeight,
     @DrawableRes flag: Int
 ) {
@@ -65,15 +68,14 @@ fun CalculatorItem(
         var amount by remember { mutableStateOf("") }
         var itemLabel by remember { mutableStateOf("") }
         var sendingAmountTextStyle by remember { mutableStateOf<TextStyle?>(null) }
-        val fromAmount = currencyConversion.fromAmount
         val toAmount = currencyConversion.toAmount
-        val fromAmountFormatted = String.format("%.2f", fromAmount.toDouble())
+//        val fromAmountFormatted = String.format("%.2f", fromAmount.toDouble())
         val toAmountFormatted = String.format("%.2f", toAmount)
 
         when (itemType) {
             ItemType.Sending -> {
                 currency = currencyConversion.from
-                amount = fromAmountFormatted
+                amount = fromAmount
                 itemLabel = stringResource(id = R.string.sending_from)
                 sendingAmountTextStyle =
                     if (error) TgTheme.tGTypography.fromAmountError
@@ -122,16 +124,13 @@ fun CalculatorItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
+            InputField(
                 text = amount,
-                style = sendingAmountTextStyle!!
+                textStyle = sendingAmountTextStyle!!,
+                onValueChange = onSendingAmountChange,
+                enabled = itemType == ItemType.Sending,
+                onDone = onDone
             )
-//            InputField(
-//                text = amount,
-//                textStyle = if (itemType == ItemType.Sending) TgTheme.tGTypography.fromAmount
-//                else TgTheme.tGTypography.toAmount
-//            )
         }
     }
 }
@@ -139,8 +138,11 @@ fun CalculatorItem(
 @Composable
 fun CurrencyConverter(
     currencyConversion: CurrencyConversion,
+    fromAmount: String = "",
     error: Boolean = false,
-    onChevronDownClick: () -> Unit = {}
+    onChevronDownClick: () -> Unit = {},
+    onSendingAmountChange: (String) -> Unit = {},
+    onDone: () -> Unit = {},
 ) {
     Box(
         modifier = Modifier
@@ -161,11 +163,14 @@ fun CurrencyConverter(
         Column {
             CalculatorItem(
                 currencyConversion = currencyConversion,
+                fromAmount = fromAmount,
                 flag = R.drawable.ic_poland_s,
                 itemType = ItemType.Sending,
                 error = error,
                 onChevronDownClick = onChevronDownClick,
-                height = 92.dp
+                height = 92.dp,
+                onSendingAmountChange = onSendingAmountChange,
+                onDone = onDone
             )
             CalculatorItem(
                 currencyConversion = currencyConversion,
@@ -244,7 +249,7 @@ fun CalculatorItemPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100,
+            fromAmount = 100.00,
             toAmount = 390.00
         ),
         flag = R.drawable.ic_poland_s,
@@ -260,7 +265,7 @@ fun CurrencyConverterPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100,
+            fromAmount = 100.00,
             toAmount = 390.00
         ),
         error = true
@@ -275,7 +280,7 @@ fun CurrencyRateComponentPreview() {
             from = "PLN",
             to = "UAH",
             rate = 3.90,
-            fromAmount = 100,
+            fromAmount = 100.00,
             toAmount = 390.00
         )
     )

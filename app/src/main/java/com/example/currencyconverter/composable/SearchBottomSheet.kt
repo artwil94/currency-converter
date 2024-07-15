@@ -65,7 +65,7 @@ fun SearchBottomSheet(
                     HorizontalDivider(color = TgTheme.tGColors.backgroundScreen)
                     Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingMedium))
                 }
-                Spacer(modifier = Modifier.height(300.dp))
+                Spacer(modifier = Modifier.height(150.dp))
             }
         }
     ) {

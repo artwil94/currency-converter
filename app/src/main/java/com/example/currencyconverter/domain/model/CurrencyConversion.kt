@@ -6,7 +6,7 @@ data class CurrencyConversion(
     val from: String,
     val to: String,
     val rate: Double,
-    val fromAmount: Int,
+    val fromAmount: Double,
     val toAmount: Double
 )
 

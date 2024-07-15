@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -151,21 +152,24 @@ data class TgTypography(
         lineHeight = 40.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
-        color = Color(0xFF2962FF)
+        color = Color(0xFF2962FF),
+        textAlign = TextAlign.End
     ),
     val fromAmountError: TextStyle = TextStyle(
         fontSize = 40.sp,
         lineHeight = 40.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
-        color = Color(0xFFF8326A)
+        color = Color(0xFFF8326A),
+        textAlign = TextAlign.End
     ),
     val toAmount: TextStyle = TextStyle(
         fontSize = 40.sp,
         lineHeight = 40.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
-        color = Color.Black
+        color = Color.Black,
+        textAlign = TextAlign.End
     ),
     val distance: TextStyle = TextStyle(
         fontSize = 24.sp,

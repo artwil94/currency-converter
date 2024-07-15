@@ -75,7 +75,7 @@ fun CountryIcon(
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            modifier = Modifier.fillMaxSize(0.5f),
+            modifier = Modifier.fillMaxSize(0.7f),
             painter = painterResource(id = icon),
             contentDescription = null,
             tint = Color.Unspecified
