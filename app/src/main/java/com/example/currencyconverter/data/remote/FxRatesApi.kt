@@ -10,5 +10,5 @@ interface FxRatesApi {
         @Query("from") from: String,
         @Query("to") to: String,
         @Query("amount") amount: Float
-    ): CurrencyRateDto
+    ): CurrencyConversionDto
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -113,10 +112,10 @@ data class TgTypography(
         fontFamily = TgTheme.fonts.robotoLight
     ),
     val bottomSheetTitle: TextStyle = TextStyle(
-        fontSize = 24.sp,
-        lineHeight = 28.sp,
-        fontFamily = TgTheme.fonts.freigeistMedium,
-        fontWeight = FontWeight(550),
+        fontSize = 28.sp,
+        lineHeight = 32.sp,
+        fontFamily = TgTheme.fonts.robotoBold,
+        fontWeight = FontWeight(700),
         color = Color.Black,
     ),
     val toolbar: TextStyle = TextStyle(
@@ -184,13 +183,20 @@ data class TgTypography(
         fontWeight = FontWeight(550),
         color = Color(0xFF333333),
     ),
-    val close: TextStyle = TextStyle(
-        fontSize = 24.sp,
+    val bottomSheetSubtitle: TextStyle = TextStyle(
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
+        fontFamily = TgTheme.fonts.robotoMedium,
+        fontWeight = FontWeight(550),
+        color = Color.Black,
+    ),
+    val country: TextStyle = TextStyle(
+        fontSize = 18.sp,
         lineHeight = 24.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
-        color = Color.White,
-    )
+        color = Color.Black
+    ),
 )
 
 data class Fonts(
@@ -235,9 +241,7 @@ data class TgColors(
     val textStandard: Color = Color(0xFF333333),
     val shadow: Color = Color(0x0D000000),
     val backgroundScreen: Color = Color(0xFFEDF0F4),
-    val screenHeader: Color = Color(0xFF1A237E),
-    val selectedItem: Color = Color(0xFF4DB6AC),
-    val surfaceBrand: Color = Color(0xFF00695C),
-    val actionButton: Color = Color(0xFFEC407A),
-    val bottomBar: Color = actionButton
+    val bottomSheetHandle : Color = Color(0xFFE6E1E6),
+    val searchBarBorder: Color = Color(0xFF6C727A)
+
 )

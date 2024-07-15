@@ -2,6 +2,7 @@ package com.example.currencyconverter.composable
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ fun CalculatorItem(
     currencyRate: CurrencyRate,
     itemType: ItemType,
     error: Boolean = false,
+    onChevronDownClick: () -> Unit = {},
     @DrawableRes flag: Int
 ) {
     Box(
@@ -93,7 +95,11 @@ fun CalculatorItem(
                         style = TgTheme.tGTypography.currency
                     )
                     Icon(
-                        modifier = Modifier.size(TgTheme.tGDimensions.iconSmall),
+                        modifier = Modifier
+                            .size(TgTheme.tGDimensions.iconSmall)
+                            .clickable {
+                                onChevronDownClick.invoke()
+                            },
                         painter = painterResource(id = R.drawable.ic_chevron_down),
                         contentDescription = null,
                         tint = Color.Gray
@@ -111,7 +117,7 @@ fun CalculatorItem(
 }
 
 @Composable
-fun CurrencyConverter(error: Boolean = false) {
+fun CurrencyConverter(error: Boolean = false, onChevronDownClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -135,7 +141,8 @@ fun CurrencyConverter(error: Boolean = false) {
                 ),
                 flag = R.drawable.ic_poland_s,
                 itemType = ItemType.Sending,
-                error = error
+                error = error,
+                onChevronDownClick = onChevronDownClick
             )
             CalculatorItem(
                 currencyRate = CurrencyRate(
@@ -146,7 +153,8 @@ fun CurrencyConverter(error: Boolean = false) {
                     toAmount = 390.00
                 ),
                 flag = R.drawable.ic_ukraine_s,
-                itemType = ItemType.Receiver
+                itemType = ItemType.Receiver,
+                onChevronDownClick = onChevronDownClick
             )
         }
     }

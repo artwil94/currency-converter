@@ -23,7 +23,7 @@ fun ColumnScope.BottomSheetHandle() {
             .width(36.dp)
             .height(5.dp)
             .background(
-                color = TgTheme.tGColors.backgroundScreen,
+                color = TgTheme.tGColors.bottomSheetHandle,
                 shape = RoundedCornerShape(size = 2.5.dp)
             )
             .align(Alignment.CenterHorizontally)

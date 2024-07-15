@@ -10,19 +10,24 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.BottomSheetHandle
+import com.example.currencyconverter.R
+import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
 
 @ExperimentalMaterialApi
 @Composable
 fun SearchBottomSheet(
     title: String,
-    infoMessage: String,
+    countries: List<Country>,
     bottomSheetState: ModalBottomSheetState
 ) {
     val coroutine = rememberCoroutineScope()
@@ -47,7 +52,20 @@ fun SearchBottomSheet(
                     style = TgTheme.tGTypography.bottomSheetTitle
                 )
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
-
+                SearchBar(text = "")
+                Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXXL))
+                Text(
+                    modifier = Modifier.align(Alignment.Start),
+                    text = stringResource(id = R.string.all_countries),
+                    style = TgTheme.tGTypography.bottomSheetSubtitle
+                )
+                Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
+                countries.forEach { country ->
+                    CountryItem(country = country)
+                    HorizontalDivider()
+                    Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingMedium))
+                }
+                Spacer(modifier = Modifier.height(300.dp))
             }
         }
     ) {

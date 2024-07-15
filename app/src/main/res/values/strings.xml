@@ -3,4 +3,8 @@
 
     <string name="home">Home</string>
     <string name="search">Search</string>
+    <string name="sending_to">Sending to</string>
+    <string name="all_countries">All countries</string>
+
+    <string name="content_description_search_countries"> Search countries</string>
 </resources>
