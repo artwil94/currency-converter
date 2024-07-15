@@ -31,7 +31,7 @@ class RatesViewModel @Inject constructor(
             when (result) {
                 is Response.Success -> {
                     uiState = uiState.copy(
-                        rate = result.data,
+                        currencyConversion = result.data,
                         isLoading = false,
                         error = null
                     )
@@ -39,7 +39,7 @@ class RatesViewModel @Inject constructor(
 
                 is Response.Error -> {
                     uiState = uiState.copy(
-                        rate = null,
+                        currencyConversion = null,
                         error = "API response error",
                         isLoading = false
                     )
@@ -54,5 +54,5 @@ class RatesViewModel @Inject constructor(
 data class RatesUIState(
     val isLoading: Boolean = true,
     val error: String? = null,
-    var rate: CurrencyRate? = null
+    var currencyConversion: CurrencyRate? = null
 )
