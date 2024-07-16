@@ -37,13 +37,13 @@ import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.ui.theme.TgTheme
+import com.example.currencyconverter.util.convertAmount
 import com.example.currencyconverter.viewmodel.DEFAULT_FROM_CURRENCY
 import com.example.currencyconverter.viewmodel.DEFAULT_TO_CURRENCY
 
 @Composable
 fun CalculatorItem(
     modifier: Modifier = Modifier,
-    fromAmount: String = "",
     currencyConversion: CurrencyConversion,
     fromCountry: Country? = null,
     toCountry: Country? = null,
@@ -70,16 +70,13 @@ fun CalculatorItem(
         contentAlignment = Alignment.Center,
     ) {
         var currency by remember { mutableStateOf("") }
-        var amount by remember { mutableStateOf("") }
+        var amount by remember { mutableStateOf(convertAmount(currencyConversion.fromAmount)) }
         var itemLabel by remember { mutableStateOf("") }
         var sendingAmountTextStyle by remember { mutableStateOf<TextStyle?>(null) }
-        val toAmount = currencyConversion.toAmount
-        val toAmountFormatted = String.format("%.2f", toAmount)
 
         when (itemType) {
             ItemType.Sending -> {
                 currency = fromCountry?.currency ?: DEFAULT_FROM_CURRENCY
-                amount = fromAmount
                 itemLabel = stringResource(id = R.string.sending_from)
                 sendingAmountTextStyle =
                     if (error) TgTheme.tGTypography.fromAmountError
@@ -88,7 +85,7 @@ fun CalculatorItem(
 
             ItemType.Receiver -> {
                 currency = toCountry?.currency ?: DEFAULT_TO_CURRENCY
-                amount = toAmountFormatted
+                amount = convertAmount(currencyConversion.toAmount)
                 itemLabel = stringResource(id = R.string.receiver_gets)
                 sendingAmountTextStyle = TgTheme.tGTypography.toAmount
             }
@@ -131,7 +128,11 @@ fun CalculatorItem(
             InputField(
                 text = amount,
                 textStyle = sendingAmountTextStyle!!,
-                onValueChange = onSendingAmountChange,
+                onValueChange = { value ->
+                    val valueValidated = value.ifEmpty { convertAmount(1f) }
+                    amount = valueValidated
+                    onSendingAmountChange.invoke(valueValidated)
+                },
                 enabled = itemType == ItemType.Sending,
                 onDone = onDone
             )
@@ -144,12 +145,12 @@ fun CurrencyConverter(
     currencyConversion: CurrencyConversion,
     fromCountry: Country? = null,
     toCountry: Country? = null,
-    fromAmount: String = "",
     error: Boolean = false,
     onFromCountryUpdate: () -> Unit = {},
     onToCountryUpdate: () -> Unit = {},
     onSendingAmountChange: (String) -> Unit = {},
     onDone: () -> Unit = {},
+    onSwitchIcon: () -> Unit = {}
 ) {
     Column {
         Box(
@@ -171,7 +172,6 @@ fun CurrencyConverter(
             Column {
                 CalculatorItem(
                     currencyConversion = currencyConversion,
-                    fromAmount = fromAmount,
                     flag = fromCountry?.icon ?: R.drawable.ic_poland_s,
                     itemType = ItemType.Sending,
                     error = error,
@@ -191,7 +191,7 @@ fun CurrencyConverter(
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Spacer(modifier = Modifier.weight(0.5f))
-                SwitchIcon()
+                SwitchIcon(onClick = { onSwitchIcon.invoke() })
                 Spacer(modifier = Modifier.weight(1f))
                 CurrencyRateComponent(currencyConversion = currencyConversion)
                 Spacer(modifier = Modifier.weight(2f))
@@ -239,6 +239,7 @@ fun CurrencyRateComponent(currencyConversion: CurrencyConversion) {
 @Composable
 fun SwitchIcon(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -246,7 +247,10 @@ fun SwitchIcon(
             .clip(CircleShape)
             .background(
                 TgTheme.tGColors.switchIcon
-            ),
+            )
+            .clickable {
+                onClick.invoke()
+            },
         contentAlignment = Alignment.Center
     ) {
         Icon(

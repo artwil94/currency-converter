@@ -50,7 +50,6 @@ fun ErrorMessage(modifier: Modifier = Modifier, text: String) {
             )
             Spacer(modifier = Modifier.width(TgTheme.tGDimensions.paddingS))
             Text(
-//                text = stringResource(id = R.string.maximum_sending_amount) + ": " + "${country.sendingLimit} ${country.currency} ",
                 text = text,
                 style = TgTheme.tGTypography.errorMesage
             )

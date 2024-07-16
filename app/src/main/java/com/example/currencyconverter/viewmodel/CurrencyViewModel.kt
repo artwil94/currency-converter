@@ -8,18 +8,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.repository.CurrencyRepository
+import com.example.currencyconverter.util.POLAND_INDEX
 import com.example.currencyconverter.util.Response
 import com.example.currencyconverter.util.SUPPORTED_COUNTRIES
+import com.example.currencyconverter.util.UKRAINE_INDEX
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val DEFAULT_FROM_CURRENCY = "PLN"
 const val DEFAULT_TO_CURRENCY = "UAH"
-const val POLAND_INDEX = 0
-const val GERMANY_INDEX = 1
-const val UK_INDEX = 2
-const val UKRAINE_INDEX = 3
 
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(
@@ -34,8 +32,7 @@ class CurrencyViewModel @Inject constructor(
             uiState = uiState.copy(
                 isLoading = true
             )
-            val result = repository.getCurrencyRate(from = from, to = to, amount = amount)
-            when (result) {
+            when (val result = repository.getCurrencyRate(from = from, to = to, amount = amount)) {
                 is Response.Success -> {
                     uiState = uiState.copy(
                         currencyConversion = result.data,
@@ -55,7 +52,7 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun updateFromCountry(country: Country, isFromCountry: Boolean) {
+    fun updateCountry(country: Country, isFromCountry: Boolean) {
         viewModelScope.launch {
             uiState = if (isFromCountry) {
                 uiState.copy(
@@ -95,6 +92,20 @@ class CurrencyViewModel @Inject constructor(
             }
         }
     }
+
+    fun switchCurrencies() {
+        val fromCountry = uiState.fromCountry
+        uiState = uiState.copy(
+            isLoading = true,
+            fromCountry = uiState.toCountry,
+            toCountry = fromCountry
+        )
+        getCurrencyRates(
+            from = uiState.fromCountry.currency,
+            to = uiState.toCountry.currency,
+            amount = uiState.currencyConversion?.fromAmount ?: 0.0f
+        )
+    }
 }
 
 data class CurrencyUIState(
@@ -103,5 +114,6 @@ data class CurrencyUIState(
     var currencyConversion: CurrencyConversion? = null,
     var fromCountry: Country = SUPPORTED_COUNTRIES[POLAND_INDEX],
     var toCountry: Country = SUPPORTED_COUNTRIES[UKRAINE_INDEX],
+    var sendingAmount: Float = 300f,
     val countriesToDisplay: List<Country> = SUPPORTED_COUNTRIES
 )

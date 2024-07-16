@@ -32,7 +32,6 @@ fun SearchBar(
                 color = TgTheme.tGColors.searchBarBorder,
                 shape = TgTheme.tGShapes.inputField
             ),
-//            .height(48.dp),
         value = text,
         label = {
             Text(

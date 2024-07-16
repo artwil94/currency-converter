@@ -49,7 +49,6 @@ fun InputField(
             keyboardController?.hide()
             focusManager.clearFocus()
             onDone.invoke()
-        }
-        )
+        })
     )
 }

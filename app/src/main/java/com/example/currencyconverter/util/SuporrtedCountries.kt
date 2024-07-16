@@ -3,6 +3,11 @@ package com.example.currencyconverter.util
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 
+const val POLAND_INDEX = 0
+const val GERMANY_INDEX = 1
+const val UK_INDEX = 2
+const val UKRAINE_INDEX = 3
+
 val SUPPORTED_COUNTRIES = listOf(
     Country(
         name = "Poland",
