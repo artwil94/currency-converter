@@ -33,10 +33,11 @@ import com.example.currencyconverter.composable.CurrencyConverter
 import com.example.currencyconverter.composable.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
-import com.example.currencyconverter.util.SUPPORTED_COUNTRIES
+import com.example.currencyconverter.viewmodel.CurrencyUIState
 import com.example.currencyconverter.viewmodel.CurrencyViewModel
-import com.example.currencyconverter.viewmodel.RatesUIState
 import kotlinx.coroutines.launch
+
+const val DEFAULT_SENDING_AMOUNT = "300"
 
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
@@ -46,11 +47,11 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     val fromCurrency by remember {
         mutableStateOf(uiState.fromCountry.currency)
     }
-    var toCurrency by remember { mutableStateOf(uiState.toCountry?.currency ?: viewModel.to.value) }
-    val sendingAmount = remember { mutableStateOf("300") }
+    val toCurrency by remember { mutableStateOf(uiState.toCountry.currency) }
+    val sendingAmount = remember { mutableStateOf(DEFAULT_SENDING_AMOUNT) }
     val amount = sendingAmount.value.toFloatOrNull() ?: 0.0f
+//    val fromAmountFormatted = String.format("%.2f", amount)
     var updateFromCountry by remember { mutableStateOf(true) }
-//    val fromAmountFormatted = String.format("%.2f",sendingAmount.value.toDouble())
     LaunchedEffect(key1 = Unit) {
         if (amount > 0 && amount < uiState.fromCountry.sendingLimit) {
             viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = amount)
@@ -71,7 +72,7 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
             HomeScreenContent(
                 uiState = uiState,
                 fromAmount = sendingAmount.value,
-                supportedCountries = SUPPORTED_COUNTRIES,
+                supportedCountries = uiState.countriesToDisplay,
                 onSendingAmountChange = { value ->
                     sendingAmount.value = value
                 },
@@ -93,6 +94,9 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                 onCountry = { country, isFromCountry ->
                     viewModel.updateFromCountry(country = country, isFromCountry)
                 },
+                onSearchInputChange = {
+                    viewModel.searchCountry(it)
+                },
                 isFromCountry = updateFromCountry,
                 error = amount > uiState.fromCountry.sendingLimit
             )
@@ -104,13 +108,14 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreenContent(
-    uiState: RatesUIState,
+    uiState: CurrencyUIState,
     fromAmount: String,
     supportedCountries: List<Country>,
     onSendingAmountChange: (String) -> Unit,
     onFromCountryUpdate: () -> Unit,
     onToCountryUpdate: () -> Unit,
     onDone: () -> Unit,
+    onSearchInputChange: (String) -> Unit,
     onCountry: (Country, Boolean) -> Unit,
     isFromCountry: Boolean = false,
     error: Boolean = false
@@ -157,6 +162,9 @@ fun HomeScreenContent(
         onCountry = { country, isFromCountry ->
             onCountry.invoke(country, isFromCountry)
         },
-        isFromCountry = isFromCountry
+        isFromCountry = isFromCountry,
+        onSearchInputChange = {
+            onSearchInputChange.invoke(it)
+        }
     )
 }

@@ -13,7 +13,11 @@ import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,9 +34,11 @@ fun SearchBottomSheet(
     countries: List<Country>,
     bottomSheetState: ModalBottomSheetState,
     onCountry: (Country, Boolean) -> Unit,
+    onSearchInputChange: (String) -> Unit,
     isFromCountry: Boolean
 ) {
     val coroutine = rememberCoroutineScope()
+    var text by remember { mutableStateOf<String?>(null) }
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetShape = TgTheme.tGShapes.bottomSheet,
@@ -44,6 +50,7 @@ fun SearchBottomSheet(
                         start = TgTheme.tGDimensions.padding,
                         end = TgTheme.tGDimensions.padding
                     )
+                    .height(800.dp)
             ) {
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.bottomSheetHandle))
                 BottomSheetHandle()
@@ -54,7 +61,10 @@ fun SearchBottomSheet(
                     style = TgTheme.tGTypography.bottomSheetTitle
                 )
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
-                SearchBar(text = "")
+                SearchBar(text = text ?: "", onValueChange = { value ->
+                    text = value
+                    onSearchInputChange.invoke(value)
+                })
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXXL))
                 Text(
                     modifier = Modifier.align(Alignment.Start),
@@ -68,11 +78,11 @@ fun SearchBottomSheet(
                         coroutine.launch {
                             bottomSheetState.hide()
                         }
+                        text = null
                     })
                     HorizontalDivider(color = TgTheme.tGColors.backgroundScreen)
                     Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingMedium))
                 }
-                Spacer(modifier = Modifier.height(150.dp))
             }
         }
     ) {

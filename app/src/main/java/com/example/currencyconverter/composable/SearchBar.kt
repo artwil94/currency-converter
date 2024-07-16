@@ -1,10 +1,7 @@
 package com.example.currencyconverter.composable
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -25,8 +22,6 @@ import com.example.currencyconverter.ui.theme.TgTheme
 fun SearchBar(
     text: String,
     onValueChange: (String) -> Unit = {},
-    @DrawableRes trailingIcon: Int? = null,
-    @DrawableRes leadingIcon: Int? = null,
 ) {
     OutlinedTextField(
         modifier = Modifier
@@ -36,15 +31,12 @@ fun SearchBar(
                 width = 1.dp,
                 color = TgTheme.tGColors.searchBarBorder,
                 shape = TgTheme.tGShapes.inputField
-            )
-            .height(48.dp),
+            ),
+//            .height(48.dp),
         value = text,
         label = {
             Text(
-                modifier = Modifier.padding(
-                    top = TgTheme.tGDimensions.paddingXs,
-                    bottom = TgTheme.tGDimensions.paddingXs
-                ), text = "Search", style = TgTheme.tGTypography.labelSmall
+                text = stringResource(id = R.string.search)
             )
         },
         onValueChange = onValueChange,
@@ -62,7 +54,7 @@ fun SearchBar(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(id = R.string.content_description_search_countries),
-                tint = TgTheme.tGColors.bottomSheetHandle
+                tint = TgTheme.tGColors.searchBarBorder
             )
         }
     )

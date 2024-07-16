@@ -100,7 +100,7 @@ data class TgTypography(
         fontSize = 16.sp,
         fontFamily = TgTheme.fonts.robotoLight,
         fontWeight = FontWeight(300),
-        color = Color(0xFF34303D),
+        color = Color.Black,
         platformStyle = PlatformTextStyle(
             includeFontPadding = false
         ),
@@ -249,7 +249,7 @@ data class TgColors(
     val backgroundScreen: Color = Color(0xFFEDF0F4),
     val bottomSheetHandle: Color = Color(0xFFE6E1E6),
     val surface: Color = bottomSheetHandle,
-    val searchBarBorder: Color = Color(0xFF6C727A),
+    val searchBarBorder: Color = Color(0xFFA2ABB8),
     val switchIcon: Color = Color(0xFF2962FF),
     val inputError: Color = Color(0xFFF8326A),
     val errorMessageContainer: Color = Color(0x1AE5476D),
