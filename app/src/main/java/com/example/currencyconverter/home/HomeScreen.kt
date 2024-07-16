@@ -82,15 +82,6 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                         )
                     }
                 },
-                onDone = {
-                    if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit) {
-                        viewModel.getCurrencyRates(
-                            from = fromCurrency,
-                            to = toCurrency,
-                            amount = sendingAmount
-                        )
-                    }
-                },
                 onFromCountryUpdate = {
                     updateFromCountry = true
                     keyboardController?.hide()
@@ -122,7 +113,7 @@ fun HomeScreenContent(
     onSendingAmountChange: (String) -> Unit,
     onFromCountryUpdate: () -> Unit,
     onToCountryUpdate: () -> Unit,
-    onDone: () -> Unit,
+    onDone: () -> Unit = {},
     onSearchInputChange: (String) -> Unit,
     onCountry: (Country, Boolean) -> Unit,
     isFromCountry: Boolean = false,
@@ -168,7 +159,10 @@ fun HomeScreenContent(
         }
     }
     SearchBottomSheet(
-        title = stringResource(id = R.string.sending_to),
+        title = stringResource(
+            id = if (isFromCountry) R.string.sending_from
+            else R.string.sending_to
+        ),
         bottomSheetState = searchBottomSheetState, countries = supportedCountries,
         onCountry = { country, isFromCountry ->
             onCountry.invoke(country, isFromCountry)

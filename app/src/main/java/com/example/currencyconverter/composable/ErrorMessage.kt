@@ -30,7 +30,7 @@ fun ErrorMessage(modifier: Modifier = Modifier, text: String) {
             .height(TgTheme.tGDimensions.errorMessage)
             .background(
                 color = TgTheme.tGColors.errorMessageContainer,
-                shape = TgTheme.tGShapes.inputField
+                shape = TgTheme.tGShapes.errorComponent
             ),
         contentAlignment = Alignment.Center
     ) {
@@ -51,7 +51,7 @@ fun ErrorMessage(modifier: Modifier = Modifier, text: String) {
             Spacer(modifier = Modifier.width(TgTheme.tGDimensions.paddingS))
             Text(
                 text = text,
-                style = TgTheme.tGTypography.errorMesage
+                style = TgTheme.tGTypography.errorMessage
             )
         }
     }

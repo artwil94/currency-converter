@@ -192,13 +192,20 @@ data class TgTypography(
         fontWeight = FontWeight(550),
         color = Color.Black
     ),
-    val errorMesage: TextStyle = TextStyle(
+    val errorMessage: TextStyle = TextStyle(
         fontSize = 12.sp,
         lineHeight = 16.sp,
         fontFamily = TgTheme.fonts.robotoMedium,
         fontWeight = FontWeight(400),
         color = Color(0xFFE5476D)
     ),
+    val searchBarLabel: TextStyle = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontFamily = TgTheme.fonts.robotoLight,
+        fontWeight = FontWeight(400),
+        color = Color(0xFFA2ABB8),
+    )
 )
 
 data class Fonts(
@@ -211,7 +218,7 @@ data class Fonts(
 )
 
 data class TgShapes(
-    val inputField: Shape = RoundedCornerShape(10.dp),
+    val inputField: Shape = RoundedCornerShape(8.dp),
     val calculatorItem: Shape = RoundedCornerShape(16.dp),
     val calculatorItemDownRounded: Shape = RoundedCornerShape(
         bottomStart = 16.dp,
