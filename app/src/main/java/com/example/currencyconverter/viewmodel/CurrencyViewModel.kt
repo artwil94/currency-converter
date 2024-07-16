@@ -6,11 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.repository.CurrencyRepository
 import com.example.currencyconverter.util.Response
+import com.example.currencyconverter.util.SUPPORTED_COUNTRIES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,38 +28,6 @@ class CurrencyViewModel @Inject constructor(
         private set
     val from: MutableState<String> = mutableStateOf(DEFAULT_FROM_CURRENCY)
     val to: MutableState<String> = mutableStateOf(DEFAULT_TO_CURRENCY)
-    val supportedCountries = listOf(
-        Country(
-            name = "Poland",
-            currency = "PLN",
-            currencyName = "Polish zloty",
-            sendingLimit = 20000,
-            icon = R.drawable.ic_poland_big
-        ),
-        Country(
-            name = "Germany",
-            currency = "EUR",
-            currencyName = "Euro",
-            sendingLimit = 5000,
-            icon = R.drawable.ic_germany_big
-        ),
-        Country(
-            name = "Great Britain",
-            currency = "GBP",
-            currencyName = "British Pound",
-            sendingLimit = 1000,
-            icon = R.drawable.ic_uk_big
-        ),
-        Country(
-            name = "Ukraine",
-            currency = "UAH",
-            currencyName = "Hrivna",
-            sendingLimit = 50000,
-            icon = R.drawable.ic_ukraine_big
-        )
-    )
-//    val fromCountry: MutableState<Country> = mutableStateOf(supportedCountries[0])
-
     fun getCurrencyRates(from: String, to: String, amount: Float) {
         viewModelScope.launch {
             uiState = uiState.copy(
@@ -87,19 +55,31 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun updateCountry(country: Country) {
+    fun updateFromCountry(country: Country) {
         viewModelScope.launch {
             uiState = uiState.copy(
                 isLoading = false,
                 fromCountry = country
             )
-            if (uiState.fromCountry?.currency != null && uiState.toCountry?.currency != null && uiState.currencyConversion != null)
-                getCurrencyRates(
-                    from = uiState.fromCountry?.currency ?: DEFAULT_FROM_CURRENCY,
-                    to = uiState.toCountry?.currency ?: DEFAULT_TO_CURRENCY,
-                    amount = uiState.currencyConversion?.fromAmount ?: 0.0f
-                )
         }
+        getCurrencyRates(
+            from = uiState.fromCountry.currency,
+            to = uiState.toCountry?.currency ?: DEFAULT_TO_CURRENCY,
+            amount = uiState.currencyConversion?.fromAmount ?: 0.0f
+        )
+    }
+    fun updateToCountry(country: Country) {
+        viewModelScope.launch {
+            uiState = uiState.copy(
+                isLoading = false,
+                toCountry = country
+            )
+        }
+        getCurrencyRates(
+            from = uiState.fromCountry.currency,
+            to = uiState.toCountry?.currency ?: DEFAULT_TO_CURRENCY,
+            amount = uiState.currencyConversion?.fromAmount ?: 0.0f
+        )
     }
 }
 
@@ -107,6 +87,6 @@ data class RatesUIState(
     val isLoading: Boolean = true,
     val error: String? = null,
     var currencyConversion: CurrencyConversion? = null,
-    var fromCountry: Country? = null,
+    var fromCountry: Country = SUPPORTED_COUNTRIES.first(),
     var toCountry: Country? = null
 )

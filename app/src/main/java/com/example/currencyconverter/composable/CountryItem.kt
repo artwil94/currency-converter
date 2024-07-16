@@ -22,11 +22,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
-
 
 @Composable
 fun CountryItem(
@@ -91,7 +89,7 @@ fun CountryItemPreview() {
             name = "Poland",
             currency = "PLN",
             currencyName = "Polish zloty",
-            sendingLimit = 20000,
+            sendingLimit = 20000f,
             icon = R.drawable.ic_poland_big
         )
     )

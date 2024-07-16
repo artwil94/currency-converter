@@ -6,6 +6,6 @@ data class Country(
     val name: String,
     val currency: String,
     val currencyName: String,
-    val sendingLimit: Int,
+    val sendingLimit: Float,
     @DrawableRes val icon: Int
 )

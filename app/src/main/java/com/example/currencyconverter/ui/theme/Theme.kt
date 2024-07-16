@@ -192,6 +192,13 @@ data class TgTypography(
         fontWeight = FontWeight(550),
         color = Color.Black
     ),
+    val errorMesage: TextStyle = TextStyle(
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        fontFamily = TgTheme.fonts.robotoMedium,
+        fontWeight = FontWeight(400),
+        color = Color(0xFFE5476D)
+    ),
 )
 
 data class Fonts(
@@ -213,6 +220,7 @@ data class TgShapes(
     val buttonDefaultShape: Shape = RoundedCornerShape(size = 1000.dp),
     val bottomSheet: Shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp),
     val currencyRateComponent: Shape = RoundedCornerShape(50.dp),
+    val errorComponent: Shape = RoundedCornerShape(8.dp),
 )
 
 data class TgDimensions(
@@ -244,5 +252,7 @@ data class TgColors(
     val searchBarBorder: Color = Color(0xFF6C727A),
     val switchIcon: Color = Color(0xFF2962FF),
     val inputError: Color = Color(0xFFF8326A),
-    val errorMessage: Color = Color(0x1AE5476D)
-)
+    val errorMessageContainer: Color = Color(0x1AE5476D),
+    val errorMessage: Color = Color(0xFFE5476D),
+
+    )

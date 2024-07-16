@@ -7,6 +7,7 @@
     <string name="sending_to">Sending to</string>
     <string name="receiver_gets">Receiver gets</string>
     <string name="all_countries">All countries</string>
+    <string name="maximum_sending_amount">Maximum sending amount</string>
 
     <string name="content_description_search_countries"> Search countries</string>
 </resources>

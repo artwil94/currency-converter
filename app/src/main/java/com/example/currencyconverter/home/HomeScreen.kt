@@ -33,42 +33,27 @@ import com.example.currencyconverter.composable.CurrencyConverter
 import com.example.currencyconverter.composable.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.ui.theme.TgTheme
-import com.example.currencyconverter.viewmodel.RatesUIState
+import com.example.currencyconverter.util.SUPPORTED_COUNTRIES
 import com.example.currencyconverter.viewmodel.CurrencyViewModel
+import com.example.currencyconverter.viewmodel.RatesUIState
 import kotlinx.coroutines.launch
-import timber.log.Timber
-
-const val POLAND_INDEX = 0
-const val GERMANY_INDEX = 1
-const val UK_INDEX = 2
-const val UKRAINE_INDEX = 3
 
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
-    val supportedCountries = viewModel.supportedCountries
-    var fromCurrency = remember {
-        mutableStateOf(
-            uiState.fromCountry?.currency ?: viewModel.from.value
-        )
+    val fromCurrency by remember {
+        mutableStateOf(uiState.fromCountry.currency)
     }
-    Timber.d("ARTURR ${fromCurrency.value}")
-    Timber.d("ARTURR state ${uiState.fromCountry?.currency}")
     var toCurrency by remember { mutableStateOf(uiState.toCountry?.currency ?: viewModel.to.value) }
-    var sendingAmount = remember { mutableStateOf("300") }
+    val sendingAmount = remember { mutableStateOf("300") }
+    val amount = sendingAmount.value.toFloatOrNull() ?: 0.0f
+    val updateFromCountry by remember { mutableStateOf(false) }
 //    val fromAmountFormatted = String.format("%.2f",sendingAmount.value.toDouble())
     LaunchedEffect(key1 = Unit) {
-        if (sendingAmount.value.isNotBlank()) {
-            val amount = sendingAmount.value.toFloat()
-            viewModel.getCurrencyRates(from = fromCurrency.value, to = toCurrency, amount = amount)
-        }
-    }
-    LaunchedEffect(key1 = uiState.fromCountry) {
-        if (sendingAmount.value.isNotBlank()) {
-            val amount = sendingAmount.value.toFloat()
-            viewModel.getCurrencyRates(from = fromCurrency.value, to = toCurrency, amount = amount)
+        if (amount > 0 && amount < uiState.fromCountry.sendingLimit) {
+            viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = amount)
         }
     }
     Scaffold(
@@ -86,23 +71,25 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
             HomeScreenContent(
                 uiState = uiState,
                 fromAmount = sendingAmount.value,
-                supportedCountries = supportedCountries,
+                supportedCountries = SUPPORTED_COUNTRIES,
                 onSendingAmountChange = { value ->
                     sendingAmount.value = value
                 },
                 onDone = {
-                    if (sendingAmount.value.isNotBlank()) {
-                        val amount = sendingAmount.value.toFloat()
+                    if (amount > 0 && amount < uiState.fromCountry.sendingLimit) {
                         viewModel.getCurrencyRates(
-                            from = fromCurrency.value,
+                            from = fromCurrency,
                             to = toCurrency,
                             amount = amount
                         )
                     }
                 },
                 onCountry = { country ->
-                    viewModel.updateCountry(country = country)
-                }
+                    if (updateFromCountry) {
+                        viewModel.updateFromCountry(country = country)
+                    }
+                },
+                error = amount > uiState.fromCountry.sendingLimit
             )
         }
     }
@@ -118,6 +105,7 @@ fun HomeScreenContent(
     onSendingAmountChange: (String) -> Unit,
     onDone: () -> Unit,
     onCountry: (Country) -> Unit,
+    error: Boolean = false
 ) {
     val searchBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -142,7 +130,8 @@ fun HomeScreenContent(
                 },
                 onSendingAmountChange = onSendingAmountChange,
                 onDone = onDone,
-                fromCountry = uiState.fromCountry
+                fromCountry = uiState.fromCountry,
+                error = error
             )
         }
     }

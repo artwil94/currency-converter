@@ -74,7 +74,6 @@ fun CalculatorItem(
         var itemLabel by remember { mutableStateOf("") }
         var sendingAmountTextStyle by remember { mutableStateOf<TextStyle?>(null) }
         val toAmount = currencyConversion.toAmount
-//        val fromAmountFormatted = String.format("%.2f", fromAmount.toDouble())
         val toAmountFormatted = String.format("%.2f", toAmount)
 
         when (itemType) {
@@ -151,49 +150,62 @@ fun CurrencyConverter(
     onSendingAmountChange: (String) -> Unit = {},
     onDone: () -> Unit = {},
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .padding(TgTheme.tGDimensions.paddingS)
-            .shadow(
-                elevation = TgTheme.tGDimensions.calculatorItemElevation,
-                shape = TgTheme.tGShapes.calculatorItem,
-                spotColor = TgTheme.tGColors.shadow
-            )
-            .background(
-                color = TgTheme.tGColors.surface,
-                shape = TgTheme.tGShapes.calculatorItem
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Column {
-            CalculatorItem(
-                currencyConversion = currencyConversion,
-                fromAmount = fromAmount,
-                flag = fromCountry?.icon ?: R.drawable.ic_poland_s,
-                itemType = ItemType.Sending,
-                error = error,
-                onChevronDownClick = onChevronDownClick,
-                height = 92.dp,
-                onSendingAmountChange = onSendingAmountChange,
-                onDone = onDone,
-                fromCountry = fromCountry
-            )
-            CalculatorItem(
-                currencyConversion = currencyConversion,
-                flag = toCountry?.icon ?: R.drawable.ic_ukraine_s,
-                itemType = ItemType.Receiver,
-                onChevronDownClick = onChevronDownClick,
-                toCountry = toCountry
-            )
+    Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .padding(TgTheme.tGDimensions.paddingS)
+                .shadow(
+                    elevation = TgTheme.tGDimensions.calculatorItemElevation,
+                    shape = TgTheme.tGShapes.calculatorItem,
+                    spotColor = TgTheme.tGColors.shadow
+                )
+                .background(
+                    color = TgTheme.tGColors.surface,
+                    shape = TgTheme.tGShapes.calculatorItem
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Column {
+                CalculatorItem(
+                    currencyConversion = currencyConversion,
+                    fromAmount = fromAmount,
+                    flag = fromCountry?.icon ?: R.drawable.ic_poland_s,
+                    itemType = ItemType.Sending,
+                    error = error,
+                    onChevronDownClick = onChevronDownClick,
+                    height = 92.dp,
+                    onSendingAmountChange = onSendingAmountChange,
+                    onDone = onDone,
+                    fromCountry = fromCountry
+                )
+                CalculatorItem(
+                    currencyConversion = currencyConversion,
+                    flag = toCountry?.icon ?: R.drawable.ic_ukraine_s,
+                    itemType = ItemType.Receiver,
+                    onChevronDownClick = onChevronDownClick,
+                    toCountry = toCountry
+                )
+            }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(0.5f))
+                SwitchIcon()
+                Spacer(modifier = Modifier.weight(1f))
+                CurrencyRateComponent(currencyConversion = currencyConversion)
+                Spacer(modifier = Modifier.weight(2f))
+            }
         }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.weight(0.5f))
-            SwitchIcon()
-            Spacer(modifier = Modifier.weight(1f))
-            CurrencyRateComponent(currencyConversion = currencyConversion)
-            Spacer(modifier = Modifier.weight(2f))
+        if (error && fromCountry != null) {
+            Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
+            ErrorMessage(
+                modifier = Modifier.padding(
+                    start = TgTheme.tGDimensions.padding,
+                    end = TgTheme.tGDimensions.padding
+                ),
+                text = stringResource(id = R.string.maximum_sending_amount) + ": " +
+                        "${fromCountry.sendingLimit} ${fromCountry.currency} ",
+            )
         }
     }
 }

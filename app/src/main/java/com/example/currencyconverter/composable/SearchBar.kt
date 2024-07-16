@@ -25,7 +25,6 @@ import com.example.currencyconverter.ui.theme.TgTheme
 fun SearchBar(
     text: String,
     onValueChange: (String) -> Unit = {},
-    onClick: () -> Unit = {},
     @DrawableRes trailingIcon: Int? = null,
     @DrawableRes leadingIcon: Int? = null,
 ) {
