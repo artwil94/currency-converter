@@ -29,7 +29,8 @@ fun SearchBottomSheet(
     title: String,
     countries: List<Country>,
     bottomSheetState: ModalBottomSheetState,
-    onCountry: (Country) -> Unit
+    onCountry: (Country, Boolean) -> Unit,
+    isFromCountry: Boolean
 ) {
     val coroutine = rememberCoroutineScope()
     ModalBottomSheetLayout(
@@ -63,7 +64,7 @@ fun SearchBottomSheet(
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
                 countries.forEach { country ->
                     CountryItem(country = country, onClick = {
-                        onCountry.invoke(country)
+                        onCountry.invoke(country, isFromCountry)
                         coroutine.launch {
                             bottomSheetState.hide()
                         }

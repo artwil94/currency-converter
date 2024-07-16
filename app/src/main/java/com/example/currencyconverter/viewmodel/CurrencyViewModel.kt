@@ -55,12 +55,19 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun updateFromCountry(country: Country) {
+    fun updateFromCountry(country: Country, isFromCountry: Boolean) {
         viewModelScope.launch {
-            uiState = uiState.copy(
-                isLoading = false,
-                fromCountry = country
-            )
+            if (isFromCountry) {
+                uiState = uiState.copy(
+                    isLoading = false,
+                    fromCountry = country
+                )
+            } else {
+                uiState = uiState.copy(
+                    isLoading = false,
+                    toCountry = country
+                )
+            }
         }
         getCurrencyRates(
             from = uiState.fromCountry.currency,
@@ -68,6 +75,7 @@ class CurrencyViewModel @Inject constructor(
             amount = uiState.currencyConversion?.fromAmount ?: 0.0f
         )
     }
+
     fun updateToCountry(country: Country) {
         viewModelScope.launch {
             uiState = uiState.copy(

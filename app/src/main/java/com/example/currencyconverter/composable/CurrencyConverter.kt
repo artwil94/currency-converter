@@ -146,7 +146,8 @@ fun CurrencyConverter(
     toCountry: Country? = null,
     fromAmount: String = "",
     error: Boolean = false,
-    onChevronDownClick: () -> Unit = {},
+    onFromCountryUpdate: () -> Unit = {},
+    onToCountryUpdate: () -> Unit = {},
     onSendingAmountChange: (String) -> Unit = {},
     onDone: () -> Unit = {},
 ) {
@@ -174,7 +175,7 @@ fun CurrencyConverter(
                     flag = fromCountry?.icon ?: R.drawable.ic_poland_s,
                     itemType = ItemType.Sending,
                     error = error,
-                    onChevronDownClick = onChevronDownClick,
+                    onChevronDownClick = onFromCountryUpdate,
                     height = 92.dp,
                     onSendingAmountChange = onSendingAmountChange,
                     onDone = onDone,
@@ -184,7 +185,7 @@ fun CurrencyConverter(
                     currencyConversion = currencyConversion,
                     flag = toCountry?.icon ?: R.drawable.ic_ukraine_s,
                     itemType = ItemType.Receiver,
-                    onChevronDownClick = onChevronDownClick,
+                    onChevronDownClick = onToCountryUpdate,
                     toCountry = toCountry
                 )
             }

@@ -49,7 +49,7 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     var toCurrency by remember { mutableStateOf(uiState.toCountry?.currency ?: viewModel.to.value) }
     val sendingAmount = remember { mutableStateOf("300") }
     val amount = sendingAmount.value.toFloatOrNull() ?: 0.0f
-    val updateFromCountry by remember { mutableStateOf(false) }
+    var updateFromCountry by remember { mutableStateOf(true) }
 //    val fromAmountFormatted = String.format("%.2f",sendingAmount.value.toDouble())
     LaunchedEffect(key1 = Unit) {
         if (amount > 0 && amount < uiState.fromCountry.sendingLimit) {
@@ -84,11 +84,16 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                         )
                     }
                 },
-                onCountry = { country ->
-                    if (updateFromCountry) {
-                        viewModel.updateFromCountry(country = country)
-                    }
+                onFromCountryUpdate = {
+                    updateFromCountry = true
                 },
+                onToCountryUpdate = {
+                    updateFromCountry = false
+                },
+                onCountry = { country, isFromCountry ->
+                    viewModel.updateFromCountry(country = country, isFromCountry)
+                },
+                isFromCountry = updateFromCountry,
                 error = amount > uiState.fromCountry.sendingLimit
             )
         }
@@ -103,8 +108,11 @@ fun HomeScreenContent(
     fromAmount: String,
     supportedCountries: List<Country>,
     onSendingAmountChange: (String) -> Unit,
+    onFromCountryUpdate: () -> Unit,
+    onToCountryUpdate: () -> Unit,
     onDone: () -> Unit,
-    onCountry: (Country) -> Unit,
+    onCountry: (Country, Boolean) -> Unit,
+    isFromCountry: Boolean = false,
     error: Boolean = false
 ) {
     val searchBottomSheetState = rememberModalBottomSheetState(
@@ -123,14 +131,22 @@ fun HomeScreenContent(
             CurrencyConverter(
                 currencyConversion = it,
                 fromAmount = fromAmount,
-                onChevronDownClick = {
+                onFromCountryUpdate = {
                     coroutineScope.launch {
                         searchBottomSheetState.show()
                     }
+                    onFromCountryUpdate.invoke()
+                },
+                onToCountryUpdate = {
+                    coroutineScope.launch {
+                        searchBottomSheetState.show()
+                    }
+                    onToCountryUpdate.invoke()
                 },
                 onSendingAmountChange = onSendingAmountChange,
                 onDone = onDone,
                 fromCountry = uiState.fromCountry,
+                toCountry = uiState.toCountry,
                 error = error
             )
         }
@@ -138,8 +154,9 @@ fun HomeScreenContent(
     SearchBottomSheet(
         title = stringResource(id = R.string.sending_to),
         bottomSheetState = searchBottomSheetState, countries = supportedCountries,
-        onCountry = {
-            onCountry.invoke(it)
-        }
+        onCountry = { country, isFromCountry ->
+            onCountry.invoke(country, isFromCountry)
+        },
+        isFromCountry = isFromCountry
     )
 }
