@@ -131,14 +131,14 @@ data class TgTypography(
         lineHeight = 20.sp,
         fontFamily = TgTheme.fonts.freigeistMedium,
         fontWeight = FontWeight(550),
-        color = Color(0xFF333333),
+        color = Color.Black
     ),
     val calculatorLabel: TextStyle = TextStyle(
         fontSize = 14.sp,
         lineHeight = 20.sp,
         fontFamily = TgTheme.fonts.robotoLight,
-        fontWeight = FontWeight(300),
-        color = Color(0xFF696878)
+        fontWeight = FontWeight(400),
+        color = Color(0xFF6C727A)
     ),
     val rateComponent: TextStyle = TextStyle(
         fontSize = 14.sp,
@@ -171,13 +171,6 @@ data class TgTypography(
         color = Color.Black,
         textAlign = TextAlign.End
     ),
-    val distance: TextStyle = TextStyle(
-        fontSize = 24.sp,
-        lineHeight = 24.sp,
-        fontFamily = TgTheme.fonts.freigeistMedium,
-        fontWeight = FontWeight(550),
-        color = Color(0xFF333333),
-    ),
     val bottomSheetSubtitle: TextStyle = TextStyle(
         fontSize = 20.sp,
         lineHeight = 24.sp,
@@ -205,7 +198,15 @@ data class TgTypography(
         fontFamily = TgTheme.fonts.robotoLight,
         fontWeight = FontWeight(400),
         color = Color(0xFFA2ABB8),
-    )
+    ),
+    val noNetwork: TextStyle = TextStyle(
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        fontFamily = TgTheme.fonts.robotoBold,
+        fontWeight = FontWeight(700),
+        color = Color(0xFF001A3F),
+    ),
+    val noNetworkDescription: TextStyle = calculatorLabel
 )
 
 data class Fonts(

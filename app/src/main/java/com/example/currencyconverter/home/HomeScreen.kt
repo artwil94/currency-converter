@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -26,19 +27,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencyconverter.R
 import com.example.currencyconverter.composable.ChangeSystemBarColor
 import com.example.currencyconverter.composable.CurrencyConverter
+import com.example.currencyconverter.composable.NoNetworkAlert
 import com.example.currencyconverter.composable.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
+import com.example.currencyconverter.network.ConnectivityObserver
+import com.example.currencyconverter.network.NetworkConnectivityObserver
 import com.example.currencyconverter.ui.theme.TgTheme
 import com.example.currencyconverter.viewmodel.CurrencyUIState
 import com.example.currencyconverter.viewmodel.CurrencyViewModel
 import kotlinx.coroutines.launch
 
+private lateinit var connectivityObserver: ConnectivityObserver
 
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
@@ -46,15 +52,38 @@ import kotlinx.coroutines.launch
 fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
     val keyboardController = LocalSoftwareKeyboardController.current
+    connectivityObserver = NetworkConnectivityObserver(context = LocalContext.current)
+    val networkStatus by connectivityObserver.observe().collectAsState(
+        initial = null
+    )
+    val isNoNetwork =
+        networkStatus == ConnectivityObserver.Status.Lost || networkStatus == ConnectivityObserver.Status.Unavailable
     val fromCurrency by remember {
         mutableStateOf(uiState.fromCountry.currency)
     }
     val toCurrency by remember { mutableStateOf(uiState.toCountry.currency) }
     var sendingAmount by remember { mutableFloatStateOf(uiState.sendingAmount) }
     var updateFromCountry by remember { mutableStateOf(true) }
+    var showNoNetworkAlert by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = Unit) {
         if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit) {
             viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = sendingAmount)
+        }
+        if (networkStatus == ConnectivityObserver.Status.Lost || networkStatus == ConnectivityObserver.Status.Unavailable) {
+            showNoNetworkAlert = true
+        }
+    }
+    LaunchedEffect(key1 = networkStatus) {
+        when (networkStatus) {
+            ConnectivityObserver.Status.Lost -> showNoNetworkAlert = true
+            ConnectivityObserver.Status.Unavailable -> showNoNetworkAlert = true
+            ConnectivityObserver.Status.Available -> viewModel.getCurrencyRates(
+                from = fromCurrency,
+                to = toCurrency,
+                amount = sendingAmount
+            )
+
+            else -> {}
         }
     }
     Scaffold(
@@ -74,12 +103,18 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                 supportedCountries = uiState.countriesToDisplay,
                 onSendingAmountChange = { value ->
                     sendingAmount = value.toFloatOrNull() ?: 1f
-                    if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit) {
+                    if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit &&
+                        networkStatus == ConnectivityObserver.Status.Available
+                    ) {
                         viewModel.getCurrencyRates(
                             from = fromCurrency,
                             to = toCurrency,
                             amount = sendingAmount
                         )
+                    }
+                    if (isNoNetwork) {
+                        showNoNetworkAlert = true
+
                     }
                 },
                 onFromCountryUpdate = {
@@ -100,6 +135,9 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                 error = sendingAmount > uiState.fromCountry.sendingLimit,
                 onSwitchIcon = { viewModel.switchCurrencies() }
             )
+        }
+        if (showNoNetworkAlert) {
+            NoNetworkAlert(onClose = { showNoNetworkAlert = false })
         }
     }
 }
