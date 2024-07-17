@@ -47,5 +47,5 @@ To set up the project locally, follow these steps:
 
 ## UX/UI
 
-<img width="400" alt="Screenshot 2024-07-17 at 12 37 50" src="https://github.com/user-attachments/assets/898028ed-cf0e-4d93-b4d2-2cbc7f2b2487">
+<img width="308" alt="Screenshot 2024-07-17 at 12 41 27" src="https://github.com/user-attachments/assets/20c239ab-d1f3-4255-9c50-6443d3c41206">
 <img width="307" alt="Screenshot 2024-07-17 at 12 38 35" src="https://github.com/user-attachments/assets/94828de4-1fb9-4573-ae7b-f4c12669a59f">
