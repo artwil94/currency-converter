@@ -26,11 +26,11 @@ To set up the project locally, follow these steps:
 
 3. **Sync the project**: Ensure that all Gradle dependencies are downloaded and the project is synced successfully.
 
-4. **Run the app**: Connect an Android device or start an emulator and run the app from Android Studio. Application requires network connection.
+4. **Run the app**: Connect an Android device or start an emulator and run the app from Android Studio. The application requires network connection.
 
 ## Usage
 
-1. **Select Currencies**: Open the app and select the source (FROM) and target (TO) currencies from lists.
+1. **Select Currencies**: Open the app and select the source (FROM) and target (TO) currencies from the lists.
 2. **Enter Amount**: Input the amount to convert (defaults to 300.00 PLN).
 3. **View Conversion**: The app will display the converted amount and the conversion rate.
 
@@ -44,3 +44,8 @@ To set up the project locally, follow these steps:
 - **Hilt Dagger**: Used for dependency injection
 - **JUnit and Mockito**: For unit testing.
 - **Timber**: For logging
+
+## UX/UI
+
+<img width="400" alt="Screenshot 2024-07-17 at 12 37 50" src="https://github.com/user-attachments/assets/898028ed-cf0e-4d93-b4d2-2cbc7f2b2487">
+<img width="307" alt="Screenshot 2024-07-17 at 12 38 35" src="https://github.com/user-attachments/assets/94828de4-1fb9-4573-ae7b-f4c12669a59f">
