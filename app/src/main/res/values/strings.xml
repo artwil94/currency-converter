@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">CurrencyConverter</string>
+
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="sending_from">Sending from</string>
+    <string name="sending_to">Sending to</string>
+    <string name="receiver_gets">Receiver gets</string>
+    <string name="all_countries">All countries</string>
+    <string name="maximum_sending_amount">Maximum sending amount</string>
+    <string name="amount_too_low">Amount too low</string>
+    <string name="no_network">No network</string>
+    <string name="check_your_internet_connection">Check your internet connection</string>
+
+    <string name="content_description_search_countries"> Search countries</string>
+    <string name="content_description_close_no_network_dialog">Close no network dialog</string>
 </resources>
