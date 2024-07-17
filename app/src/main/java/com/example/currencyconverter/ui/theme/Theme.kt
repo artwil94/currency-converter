@@ -261,6 +261,5 @@ data class TgColors(
     val switchIcon: Color = Color(0xFF2962FF),
     val inputError: Color = Color(0xFFF8326A),
     val errorMessageContainer: Color = Color(0x1AE5476D),
-    val errorMessage: Color = Color(0xFFE5476D),
-
-    )
+    val errorMessage: Color = Color(0xFFE5476D)
+)

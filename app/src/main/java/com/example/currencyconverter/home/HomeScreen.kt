@@ -44,23 +44,22 @@ import com.example.currencyconverter.viewmodel.CurrencyUIState
 import com.example.currencyconverter.viewmodel.CurrencyViewModel
 import kotlinx.coroutines.launch
 
-private lateinit var connectivityObserver: ConnectivityObserver
-
 @ExperimentalMaterialApi
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
     val uiState = viewModel.uiState
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    connectivityObserver = NetworkConnectivityObserver(context = LocalContext.current)
+    val connectivityObserver = remember { NetworkConnectivityObserver(context) }
+
     val networkStatus by connectivityObserver.observe().collectAsState(
-        initial = null
+        initial = connectivityObserver.getCurrentStatus()
     )
-    val isNoNetwork =
-        networkStatus == ConnectivityObserver.Status.Lost || networkStatus == ConnectivityObserver.Status.Unavailable
-    val fromCurrency by remember {
-        mutableStateOf(uiState.fromCountry.currency)
-    }
+    val isNoNetwork = networkStatus == ConnectivityObserver.Status.Lost ||
+            networkStatus == ConnectivityObserver.Status.Unavailable
+
+    val fromCurrency by remember { mutableStateOf(uiState.fromCountry.currency) }
     val toCurrency by remember { mutableStateOf(uiState.toCountry.currency) }
     var sendingAmount by remember { mutableFloatStateOf(uiState.sendingAmount) }
     var updateFromCountry by remember { mutableStateOf(true) }
@@ -69,21 +68,20 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
         if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit) {
             viewModel.getCurrencyRates(from = fromCurrency, to = toCurrency, amount = sendingAmount)
         }
-        if (networkStatus == ConnectivityObserver.Status.Lost || networkStatus == ConnectivityObserver.Status.Unavailable) {
+        if (isNoNetwork) {
             showNoNetworkAlert = true
         }
     }
-    LaunchedEffect(key1 = networkStatus) {
-        when (networkStatus) {
-            ConnectivityObserver.Status.Lost -> showNoNetworkAlert = true
-            ConnectivityObserver.Status.Unavailable -> showNoNetworkAlert = true
-            ConnectivityObserver.Status.Available -> viewModel.getCurrencyRates(
+    LaunchedEffect(key1 = isNoNetwork) {
+        if (isNoNetwork) {
+            showNoNetworkAlert = true
+        } else {
+            showNoNetworkAlert = false
+            viewModel.getCurrencyRates(
                 from = fromCurrency,
                 to = toCurrency,
                 amount = sendingAmount
             )
-
-            else -> {}
         }
     }
     Scaffold(
@@ -102,7 +100,7 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                 uiState = uiState,
                 supportedCountries = uiState.countriesToDisplay,
                 onSendingAmountChange = { value ->
-                    sendingAmount = value.toFloatOrNull() ?: 1f
+                    sendingAmount = value.toFloatOrNull() ?: 0f
                     if (sendingAmount > 0 && sendingAmount < uiState.fromCountry.sendingLimit &&
                         networkStatus == ConnectivityObserver.Status.Available
                     ) {
@@ -114,7 +112,6 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                     }
                     if (isNoNetwork) {
                         showNoNetworkAlert = true
-
                     }
                 },
                 onFromCountryUpdate = {
@@ -132,7 +129,15 @@ fun HomeScreen(viewModel: CurrencyViewModel = hiltViewModel()) {
                     viewModel.searchCountry(it)
                 },
                 isFromCountry = updateFromCountry,
-                error = sendingAmount > uiState.fromCountry.sendingLimit,
+                error = sendingAmount > uiState.fromCountry.sendingLimit || sendingAmount == 0f,
+                errorMessage = when {
+                    sendingAmount > uiState.fromCountry.sendingLimit -> stringResource(
+                        id = R.string.maximum_sending_amount
+                    ) + ": " + "${uiState.fromCountry.sendingLimit} ${uiState.fromCountry.currency} "
+
+                    sendingAmount == 0f -> stringResource(id = R.string.amount_too_low)
+                    else -> ""
+                },
                 onSwitchIcon = { viewModel.switchCurrencies() }
             )
         }
@@ -156,6 +161,7 @@ fun HomeScreenContent(
     onCountry: (Country, Boolean) -> Unit,
     isFromCountry: Boolean = false,
     error: Boolean = false,
+    errorMessage: String,
     onSwitchIcon: () -> Unit
 ) {
     val searchBottomSheetState = rememberModalBottomSheetState(
@@ -190,6 +196,7 @@ fun HomeScreenContent(
                 fromCountry = uiState.fromCountry,
                 toCountry = uiState.toCountry,
                 error = error,
+                errorMessage = errorMessage,
                 onSwitchIcon = {
                     onSwitchIcon.invoke()
                 }

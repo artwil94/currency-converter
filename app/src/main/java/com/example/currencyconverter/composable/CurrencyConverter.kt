@@ -55,6 +55,10 @@ fun CalculatorItem(
     height: Dp = TgTheme.tGDimensions.calculatorItemReceiverHeight,
     @DrawableRes flag: Int
 ) {
+    var currency by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf<String?>(convertAmount(currencyConversion.fromAmount)) }
+    var itemLabel by remember { mutableStateOf("") }
+    var sendingAmountTextStyle by remember { mutableStateOf<TextStyle?>(null) }
     Box(
         modifier = modifier
             .height(height)
@@ -69,11 +73,6 @@ fun CalculatorItem(
             ),
         contentAlignment = Alignment.Center,
     ) {
-        var currency by remember { mutableStateOf("") }
-        var amount by remember { mutableStateOf(convertAmount(currencyConversion.fromAmount)) }
-        var itemLabel by remember { mutableStateOf("") }
-        var sendingAmountTextStyle by remember { mutableStateOf<TextStyle?>(null) }
-
         when (itemType) {
             ItemType.Sending -> {
                 currency = fromCountry?.currency ?: DEFAULT_FROM_CURRENCY
@@ -126,10 +125,10 @@ fun CalculatorItem(
                 }
             }
             InputField(
-                text = amount,
+                text = amount ?: "0",
                 textStyle = sendingAmountTextStyle!!,
                 onValueChange = { value ->
-                    val valueValidated = value.ifEmpty { convertAmount(1f) }
+                    val valueValidated = value.ifEmpty { convertAmount(0f) }
                     amount = valueValidated
                     onSendingAmountChange.invoke(valueValidated)
                 },
@@ -146,6 +145,7 @@ fun CurrencyConverter(
     fromCountry: Country? = null,
     toCountry: Country? = null,
     error: Boolean = false,
+    errorMessage: String = "",
     onFromCountryUpdate: () -> Unit = {},
     onToCountryUpdate: () -> Unit = {},
     onSendingAmountChange: (String) -> Unit = {},
@@ -204,8 +204,7 @@ fun CurrencyConverter(
                     start = TgTheme.tGDimensions.padding,
                     end = TgTheme.tGDimensions.padding
                 ),
-                text = stringResource(id = R.string.maximum_sending_amount) + ": " +
-                        "${fromCountry.sendingLimit} ${fromCountry.currency} ",
+                text = errorMessage
             )
         }
     }

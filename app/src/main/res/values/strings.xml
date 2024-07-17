@@ -8,6 +8,7 @@
     <string name="receiver_gets">Receiver gets</string>
     <string name="all_countries">All countries</string>
     <string name="maximum_sending_amount">Maximum sending amount</string>
+    <string name="amount_too_low">Amount too low</string>
     <string name="no_network">No network</string>
     <string name="check_your_internet_connection">Check your internet connection</string>
 
