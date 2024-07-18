@@ -151,13 +151,18 @@ class CurrencyViewModelTest {
     }
 
     @Test
-    fun `searchCountry filters countries correctly for Germany and Great Britain`() = runTest {
+    fun `searchCountry filters countries correctly`() = runTest {
         viewModel.searchCountry("g")
 
         advanceUntilIdle()
 
         val expectedCountries =
             SUPPORTED_COUNTRIES.filter { it.name.contains("g", ignoreCase = true) }
+
+        assertEquals(listOf(
+            SUPPORTED_COUNTRIES.find { it.name == "Germany" },
+            SUPPORTED_COUNTRIES.find { it.name == "Great Britain" }
+        ), expectedCountries)
 
         assertEquals(expectedCountries, viewModel.uiState.countriesToDisplay)
     }
