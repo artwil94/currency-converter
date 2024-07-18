@@ -67,13 +67,12 @@ class CurrencyViewModel @Inject constructor(
                     countriesToDisplay = SUPPORTED_COUNTRIES
                 )
             }
+            getCurrencyRates(
+                from = uiState.fromCountry.currency,
+                to = uiState.toCountry.currency,
+                amount = uiState.currencyConversion?.fromAmount ?: 0.0f
+            )
         }
-        getCurrencyRates(
-            from = uiState.fromCountry.currency,
-            to = uiState.toCountry.currency,
-            amount = uiState.currencyConversion?.fromAmount ?: 0.0f
-        )
-
     }
 
     fun searchCountry(input: String?) {
@@ -109,7 +108,7 @@ class CurrencyViewModel @Inject constructor(
 }
 
 data class CurrencyUIState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val error: String? = null,
     var currencyConversion: CurrencyConversion? = null,
     var fromCountry: Country = SUPPORTED_COUNTRIES[POLAND_INDEX],
