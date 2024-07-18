@@ -10,7 +10,7 @@ data class CurrencyConversion(
     val toAmount: Float
 )
 
-fun CurrencyConversionDto.toCurrencyRate(): CurrencyConversion? {
+fun CurrencyConversionDto.toCurrencyConversion(): CurrencyConversion? {
     return if (from != null && to != null && rate != null && fromAmount != null && toAmount != null) {
         CurrencyConversion(
             from = from,
