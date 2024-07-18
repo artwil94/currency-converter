@@ -42,7 +42,7 @@ To set up the project locally, follow these steps:
 - **Coroutines and Flow**: For asynchronous operations.
 - **Retrofit**: For making API calls
 - **Hilt Dagger**: Used for dependency injection
-- **JUnit and Mockito**: For unit testing.
+- **JUnit and MockK**: For unit testing.
 - **Timber**: For logging
 
 ## UX/UI
