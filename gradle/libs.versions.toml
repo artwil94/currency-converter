@@ -4,7 +4,8 @@ appcompatVersion = "1.7.0"
 converterMoshiVersion = "2.9.0"
 hiltAndroidVersion = "2.50"
 hiltNavigationComposeVersion = "1.2.0"
-kotlin = "1.9.0"
+kotlin = "2.0.0"
+kspVersion = "2.0.0-1.0.23"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -68,5 +69,7 @@ androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidVersion" }
+google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
