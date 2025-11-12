@@ -8,7 +8,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.currencyconverter.home.HomeScreen
-import com.example.currencyconverter.search.SearchCountryScreen
 
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi
@@ -17,10 +16,8 @@ import com.example.currencyconverter.search.SearchCountryScreen
 fun SetupNavGraph(
     navController: NavHostController
 ) {
-    NavHost(navController = navController, startDestination = Screen.Home.route) {
-        composable(
-            route = Screen.Home.route
-        ) {
+    NavHost(navController = navController, startDestination = Destination.Home) {
+        composable<Destination.Home> {
             HomeScreen()
         }
     }

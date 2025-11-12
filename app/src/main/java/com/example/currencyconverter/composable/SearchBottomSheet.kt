@@ -48,10 +48,7 @@ fun SearchBottomSheet(
             Column(
                 modifier = Modifier
                     .windowInsetsPadding(WindowInsets.navigationBars)
-                    .padding(
-                        start = TgTheme.tGDimensions.padding,
-                        end = TgTheme.tGDimensions.padding
-                    )
+                    .padding(horizontal = TgTheme.tGDimensions.padding)
                     .height(800.dp)
             ) {
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.bottomSheetHandle))
@@ -63,7 +60,7 @@ fun SearchBottomSheet(
                     style = TgTheme.tGTypography.bottomSheetTitle
                 )
                 Spacer(modifier = Modifier.height(TgTheme.tGDimensions.paddingXL))
-                SearchBar(text = text ?: "", onValueChange = { value ->
+                SearchBar(text = text.orEmpty(), onValueChange = { value ->
                     text = value
                     onSearchInputChange.invoke(value)
                 })

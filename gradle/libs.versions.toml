@@ -1,47 +1,46 @@
 [versions]
-agp = "8.3.2"
+agp = "8.13.1"
+android-compileSdk = "36"
+android-minSdk = "29"
+android-targetSdk = "36"
 appcompatVersion = "1.7.0"
-converterMoshiVersion = "2.9.0"
-hiltAndroidVersion = "2.50"
-hiltNavigationComposeVersion = "1.2.0"
-kotlin = "2.0.0"
-kspVersion = "2.0.0-1.0.23"
-coreKtx = "1.13.1"
+converterMoshiVersion = "3.0.0"
+hiltAndroidVersion = "2.57.2"
+hiltNavigationComposeVersion = "1.3.0"
+kotlin = "2.2.21"
+kspVersion = "2.2.21-2.0.4"
+coreKtx = "1.17.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-kotlinxCoroutinesTestVersion = "1.6.4"
-kotlinxSerializationJsonVersion = "1.6.3"
-lifecycleRuntimeKtx = "2.8.3"
-activityCompose = "1.9.0"
-composeBom = "2024.06.00"
-loggingInterceptorVersion = "5.0.0-alpha.3"
-material = "1.6.8"
-mockitoCoreVersion = "4.0.0"
-mockitoInlineVersion = "4.0.0"
-mockitoKotlinVersion = "4.0.0"
-mockkVersion = "1.12.4"
-navVersion = "2.7.7"
-retrofitVersion = "2.9.0"
-roomVersion = "2.6.1"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
+kotlinxCoroutinesTestVersion = "1.10.2"
+kotlinxSerializationJsonVersion = "1.9.0"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.11.00"
+loggingInterceptorVersion = "5.3.0"
+material = "1.9.4"
+mockitoCoreVersion = "5.20.0"
+mockitoInlineVersion = "5.2.0"
+mockitoKotlinVersion = "6.1.0"
+mockkVersion = "1.14.6"
+navVersion = "2.9.6"
+retrofitVersion = "3.0.0"
+roomVersion = "2.8.3"
 accompanistVersion = "0.30.1"
 timberVersion = "5.0.1"
-junitKtxVersion = "1.2.1"
+junitKtxVersion = "1.3.0"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistVersion" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationComposeVersion" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "material" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navVersion" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterMoshiVersion" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshiVersion" }
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroidVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -66,6 +65,12 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtxVersion" }
 
+# DI
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationComposeVersion" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroidVersion" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -73,3 +78,4 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-dagger-hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidVersion" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -9,6 +9,7 @@ import com.example.currencyconverter.util.UKRAINE_INDEX
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -76,6 +77,7 @@ class CurrencyViewModelTest {
             rate = 0.0,
             toAmount = 0f
         )
+
         coEvery { repository.getCurrencyRate("PLN", "UAH", 300f) } returns Response.Error(
             errorConversion,
             "API response error"
