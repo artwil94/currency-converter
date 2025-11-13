@@ -1,4 +1,4 @@
-package com.example.currencyconverter.composable
+package com.example.currencyconverter.components
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions

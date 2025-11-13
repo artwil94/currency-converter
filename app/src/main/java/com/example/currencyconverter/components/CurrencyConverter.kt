@@ -1,4 +1,4 @@
-package com.example.currencyconverter.composable
+package com.example.currencyconverter.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
@@ -36,10 +36,10 @@ import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.domain.model.CurrencyConversion
-import com.example.currencyconverter.ui.theme.TgTheme
+import com.example.currencyconverter.presentation.theme.TgTheme
 import com.example.currencyconverter.util.convertAmount
-import com.example.currencyconverter.viewmodel.DEFAULT_FROM_CURRENCY
-import com.example.currencyconverter.viewmodel.DEFAULT_TO_CURRENCY
+import com.example.currencyconverter.presentation.viewmodel.DEFAULT_FROM_CURRENCY
+import com.example.currencyconverter.presentation.viewmodel.DEFAULT_TO_CURRENCY
 
 @Composable
 fun CalculatorItem(

@@ -2,7 +2,7 @@ package com.example.currencyconverter.di
 
 import com.example.currencyconverter.data.remote.FxRatesApi
 import com.example.currencyconverter.domain.repository.CurrencyRepository
-import com.example.currencyconverter.domain.repository.CurrencyRepositoryImpl
+import com.example.currencyconverter.data.repository.CurrencyRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -10,8 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import com.example.currencyconverter.navigation.MainScreen
-import com.example.currencyconverter.ui.theme.CurrencyConverterTheme
+import com.example.currencyconverter.presentation.navigation.MainScreen
+import com.example.currencyconverter.presentation.theme.CurrencyConverterTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalMaterialApi

@@ -1,4 +1,4 @@
-package com.example.currencyconverter.viewmodel
+package com.example.currencyconverter.presentation.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

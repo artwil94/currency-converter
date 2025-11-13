@@ -1,4 +1,4 @@
-package com.example.currencyconverter.composable
+package com.example.currencyconverter.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.currencyconverter.R
-import com.example.currencyconverter.ui.theme.TgTheme
+import com.example.currencyconverter.presentation.theme.TgTheme
 
 @ExperimentalMaterial3Api
 @Composable

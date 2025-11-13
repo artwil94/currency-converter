@@ -1,4 +1,4 @@
-package com.example.currencyconverter.composable
+package com.example.currencyconverter.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

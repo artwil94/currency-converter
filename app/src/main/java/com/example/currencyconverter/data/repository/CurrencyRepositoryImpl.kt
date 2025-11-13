@@ -1,8 +1,9 @@
-package com.example.currencyconverter.domain.repository
+package com.example.currencyconverter.data.repository
 
 import com.example.currencyconverter.data.remote.FxRatesApi
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.model.toCurrencyConversion
+import com.example.currencyconverter.domain.repository.CurrencyRepository
 import com.example.currencyconverter.util.Response
 import javax.inject.Inject
 

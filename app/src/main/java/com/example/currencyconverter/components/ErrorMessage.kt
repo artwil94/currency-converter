@@ -1,4 +1,4 @@
-package com.example.currencyconverter.composable
+package com.example.currencyconverter.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Country
-import com.example.currencyconverter.ui.theme.TgTheme
+import com.example.currencyconverter.presentation.theme.TgTheme
 
 @Composable
 fun ErrorMessage(modifier: Modifier = Modifier, text: String) {

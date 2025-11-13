@@ -1,4 +1,4 @@
-package com.example.currencyconverter.home
+package com.example.currencyconverter.presentation.views.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,16 +32,16 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencyconverter.R
-import com.example.currencyconverter.composable.ChangeSystemBarColor
-import com.example.currencyconverter.composable.CurrencyConverter
-import com.example.currencyconverter.composable.NoNetworkAlert
-import com.example.currencyconverter.composable.SearchBottomSheet
+import com.example.currencyconverter.components.ChangeSystemBarColor
+import com.example.currencyconverter.components.CurrencyConverter
+import com.example.currencyconverter.components.NoNetworkAlert
+import com.example.currencyconverter.components.SearchBottomSheet
 import com.example.currencyconverter.domain.model.Country
 import com.example.currencyconverter.network.ConnectivityObserver
 import com.example.currencyconverter.network.NetworkConnectivityObserver
-import com.example.currencyconverter.ui.theme.TgTheme
-import com.example.currencyconverter.viewmodel.CurrencyUIState
-import com.example.currencyconverter.viewmodel.CurrencyViewModel
+import com.example.currencyconverter.presentation.theme.TgTheme
+import com.example.currencyconverter.presentation.viewmodel.CurrencyUIState
+import com.example.currencyconverter.presentation.viewmodel.CurrencyViewModel
 import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi

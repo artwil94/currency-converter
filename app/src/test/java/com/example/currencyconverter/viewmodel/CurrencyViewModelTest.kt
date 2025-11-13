@@ -2,6 +2,7 @@ package com.example.currencyconverter.viewmodel
 
 import com.example.currencyconverter.domain.model.CurrencyConversion
 import com.example.currencyconverter.domain.repository.CurrencyRepository
+import com.example.currencyconverter.presentation.viewmodel.CurrencyViewModel
 import com.example.currencyconverter.util.GERMANY_INDEX
 import com.example.currencyconverter.util.Response
 import com.example.currencyconverter.util.SUPPORTED_COUNTRIES
@@ -9,7 +10,6 @@ import com.example.currencyconverter.util.UKRAINE_INDEX
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.slot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

@@ -1,4 +1,4 @@
-package com.example.currencyconverter.navigation
+package com.example.currencyconverter.presentation.navigation
 
 import kotlinx.serialization.Serializable
 
